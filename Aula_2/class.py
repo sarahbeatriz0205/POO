@@ -1,7 +1,7 @@
 #classe: a ideia de um objeto, de como ele será, uma abstração. define um tipo de objeto
 #Entidade
 class Triangulo:
-    def __init__(self): #obrigatório
+    def __init__(self): #obrigatório; é o construtor: inicialização do objeto
         self.base = 0
         self.altura = 0
     def calc_area(self):
