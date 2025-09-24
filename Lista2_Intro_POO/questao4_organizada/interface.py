@@ -1,20 +1,4 @@
-class Ingresso: #Entidade: tem instâncias
-    def __init__(self):
-        self.dia = ""
-        self.horario = 0
-    def ingresso_inteira(self):
-        if self.dia == "qua":
-            return 8
-        if self.dia in ["seg", "ter", "qui"]:
-            valor = 16
-        else:
-            valor = 20
-        if self.hora == 0 or self.hora >= 17:
-            valor = valor * 1.5
-        return valor
-    def meia(self):
-        if self.dia == "qua":
-            return self.ingresso_inteira() / 2
+from ingresso import Ingresso
 
 class InterfaceUsuario: # Não tem instâncias
     @staticmethod # é um método chamado com a classe 
@@ -38,5 +22,3 @@ class InterfaceUsuario: # Não tem instâncias
         print("O valor será de R$:", x.ingresso_inteira())
     
 InterfaceUsuario.main()
-
-# Métodos especiais (métodos mágicos): métodos com dois underlines no início e no fim de um nome
