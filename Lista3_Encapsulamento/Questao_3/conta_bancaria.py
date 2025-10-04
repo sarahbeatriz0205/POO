@@ -1,39 +1,49 @@
-class Conta:
-    def __init__(self, nome, num_conta, deposito, saque):
-        self.set_nome(nome)
-        self.set_num_conta(num_conta)
-        self.__saldo = 1000
-        self.set_deposito(deposito)
-        self.set_saque(saque)
-        
+class ContaBancaria:
+    def __init__(self, nome, numeroConta, senha):
+        self.__nome = nome
+        self.__numeroConta = numeroConta
+        self.__senha = senha
+        self.saldo = float(10.55)
+
+    # retorna os valores desses atributos antes e depois da modificação
     def get_nome(self):
         return self.__nome
-    def get_num_conta(self):
-        return self.__num_conta
-    def get_saldo(self):
-        return self.__saldo
-    def get_deposito(self):
-        return self.__deposito
-    def get_saque(self):
-        return self.__saque
-
-    def set_nome(self, nome):
-        self.__nome = nome
-    def set_num_conta(self, num_conta):
-        self.__num_conta = num_conta
-    def set_deposito(self, deposito):
-        if deposito > 1:
-            self.__deposito + self.__saldo
-        else:
-            raise ValueError("Ocorreu um erro! O valor deve ser maior que 1")
-    def set_saque(self, saque):
-        if saque < self.__saldo:
-            self.__saldo - self.__saque
-        else:
-            raise ValueError("Ocorreu um erro! Você não tem saldo o suficiente!")
+    def get_numeroConta(self):
+        return self.__numeroConta
+    def get_senha(self):
+        return self.__senha
     
-    def deposito(self, deposito):
-        valor = deposito
-        return self.__saldo + valor
-    def saque(self, saque):
-        return self.__saldo - saque
+    # altera e valida os valores
+    def set_nome(self, newNome):
+        if newNome == "":
+            return "Erro! O campo deve ser preenchido!"
+            exit()
+        else:
+            self.__nome = newNome
+    def set_numeroConta(self, newNumeroConta):
+        if newNumeroConta == "":
+            return "Erro! O campo deve ser preenchido!"
+            exit()
+        self.__numeroConta = newNumeroConta
+    def set_senha(self, newSenha):
+        if newSenha == "":
+            return "Erro! O campo deve ser preenchido!"
+            exit()
+        else:
+            self.__senha = newSenha
+            
+
+    # tentar "validar" o acesso lá no menu 
+    def deposito(self, valorDeposito):
+            if valorDeposito > 0:
+                self.saldo = self.saldo + valorDeposito
+                return f"Valor depositado com sucesso! Seu saldo agora é de R$ {self.saldo:.2f}"
+            else:
+                return "Tá querendo depositar o vento, é? O valor tem que ser maior que 0, meu chapa."
+
+    def saque(self, valorSaque):
+        if valorSaque > self.saldo:
+            return "Vai tirar essa grana daqui? Vai não, viu. Você não tem saldo suficiente KKKKKKKKKKKKKKK"
+        else:
+            self.saldo = self.saldo - valorSaque
+            return f"Valor sacado com sucesso! Seu saldo agora é de R$  {self.saldo:.2f}"
