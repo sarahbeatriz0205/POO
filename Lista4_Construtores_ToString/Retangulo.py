@@ -36,3 +36,6 @@ class Retangulo:
     
     def __str__(self):
         return f"Base: {self.__base:.2f} e Altura: {self.__altura:.2f}"
+
+x = Retangulo(20, 10)
+print(x)

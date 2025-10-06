@@ -19,4 +19,7 @@ class DecimalBinario:
     def __str__(self):
         return f"Em decimal: {self.__decimal} \nEm binário: {bin(self.__decimal)[2:]}"
     
+x = DecimalBinario(14)
+print(x)
+    
 # [2:] inicie a impressão a partir do índice 2

@@ -30,3 +30,6 @@ class Frete:
 
     def __str__(self):
         return f"Distância: {self.__distanciaTrajeto:.2f} \nPeso: {self.__peso:.2f}"
+
+x = Frete(40.5, 20)
+print(x)
