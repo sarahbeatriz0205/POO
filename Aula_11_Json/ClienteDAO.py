@@ -1,3 +1,5 @@
+# Uma classe DAO (Data Access Object) é um padrão de projeto (design pattern) usado em programação para separar a lógica de acesso a dados da lógica de negócio de uma aplicação.
+
 class Cliente:
     def __init__(self, id, nome):
         self.id = id
@@ -10,7 +12,7 @@ class ClienteDAO:
     clientes = []
     @classmethod
     def inserir(cls, cliente):
-        if any(c.id == cliente.id for c in self.clientes):
+        if any(c.id == cliente.id for c in cls.clientes):
             print(f"Erro: já existe um cliente com o ID {cliente.id}")
         else:
             cls.clientes.append(cliente)
