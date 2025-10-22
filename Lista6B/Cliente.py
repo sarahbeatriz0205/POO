@@ -42,3 +42,13 @@ class Cliente:
 
     def __str__(self):
         return f"{self.__id} - {self.__nome} - {self.__email} - {self.__telefone}"
+
+
+
+class Venda:
+    def __init__(self, id, data, idCliente):
+        self.id = id
+        self.data = data
+        self.carrinho = True
+        self.total = 0
+        self.idCliente = idCliente
