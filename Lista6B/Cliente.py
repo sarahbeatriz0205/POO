@@ -47,8 +47,16 @@ class Cliente:
 
 class Venda:
     def __init__(self, id, data, idCliente):
-        self.id = id
-        self.data = data
-        self.carrinho = True
-        self.total = 0
-        self.idCliente = idCliente
+        self.__id = id
+        self.__data = data
+        self.__carrinho = True
+        self.__total = 0
+        self.__idCliente = idCliente
+    
+    def set_id(self, id):
+        if id == None:
+            return f"Erro!"
+        elif str(id):
+            raise TypeError()
+        else:
+            self.__id = id
