@@ -20,6 +20,7 @@ class Categoria:
     @staticmethod
     def to_json(self):
         return {"id" : self.__id, "descricao" : self.__descricao} # me permite que eu ponha o nome que eu quiser para as chaves
+    @staticmethod
     def from_json(dic):
         return Categoria(dic["id"], dic["descricao"]) 
     

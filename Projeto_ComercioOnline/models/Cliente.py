@@ -1,10 +1,16 @@
 import json
 class Cliente:
     def __init__(self, id, nome, email, telefone):
-        self.id = id
-        self.nome = nome
-        self.email =  email
-        self.telefone = telefone
+        self.__id = id
+        self.__nome = nome
+        self.__email =  email
+        self.__telefone = telefone
+    
+    def to_json(self):
+        return {"id" : self.__id, "nome" : self.__nome, "email" : self.__email, "telefone" : self.__telefone} # me permite que eu ponha o nome que eu quiser para as chaves
+    @staticmethod
+    def from_json(dic):
+        return Cliente(dic["id"], dic["nome"], dic["email"], dic["telefone"]) 
 
     def set_id(self, id):
         if id == None:
@@ -33,65 +39,69 @@ class Cliente:
             self.__telefone = telefone
 
     def get_id(self):
-        return self._id
+        return self.__id
     def get_nome(self):
-        return self._nome
+        return self.__nome
     def get_email(self):
-        return self._email
+        return self.__email
     def get_telefone(self):
-        return self._telefone
+        return self.__telefone
 
     def __str__(self):
         return f"{self.__id} - {self.__nome} - {self.__email} - {self.__telefone}"
 
 
 
-class ClienteDAO:
-    clientes_cadastrados = []
-
-    @classmethod
-    def inserir(cls, cliente):
-        cls.abrir_json()
-        cls.clientes_cadastrados.append(cliente.id)
-        cls.salvar_json()
+class ClienteDAO:             # classe estática -> não tem instância
+    objetos = []              # atributo da classe
+    @classmethod              # classe DAO não vai ter instância
+    def inserir(cls, obj):
+        cls.abrir()
+        id = 0
+        for aux in cls.objetos:
+            if aux.id > id: id = aux.id
+        obj.id = id + 1    
+        cls.objetos.append(obj)
+        cls.salvar()
     @classmethod
     def listar(cls):
-        cls.abrir_json()
-        return cls.clientes_cadastrados
+        cls.abrir()
+        return cls.objetos
     @classmethod
     def listar_id(cls, id):
-        cls.abrir_json()
-        for i in cls.clientes_cadastrados:
-            if i.get_id() == id:
-                return i
-        return None
+        cls.abrir()
+        for obj in cls.objetos:
+            if obj.id == id: return obj
+        return None    
     @classmethod
-    def atualizar(cls, cliente):
-        cls.abrir_json()
-        aux = cls.listar_id(cliente.id)
+    def atualizar(cls, obj):
+        # procurar o objeto que tem o id dado por obj.id
+        aux = cls.listar_id(obj.id)
         if aux != None:
-            cls.clientes_cadastrados.remove(cliente.get_id())
-            cls.clientes_cadastrados.append(cliente)
-        cls.salvar_json()
+            #aux.nome = obj.nome
+            # remove o objeto antigo aux e insere o novo obj
+            cls.objetos.remove(aux)
+            cls.objetos.append(obj)
+            cls.salvar()
     @classmethod
-    def excluir(cls, cliente):
-        cls.abrir_json()
-        aux = cls.listar_id(cliente.id)
+    def excluir(cls, obj):
+        # procurar o objeto que tem o id dado por obj.id
+        aux = cls.listar_id(obj.id)
         if aux != None:
-            cls.clientes_cadastrados.remove(cliente.get_id())
-        cls.salvar_json()
+            cls.objetos.remove(aux)
+            cls.salvar()
     @classmethod
-    def abrir_json(cls):
-        cls.clientes_cadastrados = []
-        try: 
+    def salvar(cls):
+        with open("clientes.json", mode="w") as arquivo:
+            json.dump(cls.objetos, arquivo, default = vars, indent=4)
+    @classmethod
+    def abrir(cls):
+        cls.objetos = []
+        try:
             with open("clientes.json", mode="r") as arquivo:
                 list_dic = json.load(arquivo)
                 for dic in list_dic:
-                    c = Cliente(dic["id"], dic["nome"], dic["email"], dic["telefone"])
-                    cls.clientes_cadastrados.append(c)
+                    c = Cliente(dic["id"], dic["nome"])
+                    cls.objetos.append(c)
         except:
-            pass
-    @classmethod
-    def salvar_json(cls):
-        with open("clientes.json", mode="w") as arquivo:
-            json.dump(cls.clientes_cadastrados, arquivo, default=vars, indent=4)
+            pass            
