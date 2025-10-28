@@ -7,7 +7,7 @@ class Cliente:
         self.telefone = telefone
     
     def __str__(self):
-        return f"Id = {self.idCliente} - Nome = {self.nome} - E-mail = {self.email} - Telefone = {self.telefone}"
+        return f"{self.idCliente} - {self.nome} - {self.email} - {self.telefone}"
     
     def to_json(self):
         return {"idCliente" : self.idCliente, "nome" : self.nome, "email" : self.email, "telefone" : self.telefone} # me permite que eu ponha o nome que eu quiser para as chaves

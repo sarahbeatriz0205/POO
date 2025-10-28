@@ -8,7 +8,7 @@ class Categoria:
         return f"{self.id} - {self.descricao}"
     
     def to_json(self):
-        return {"id" : self.__id, "descricao" : self.__descricao} # me permite que eu ponha o nome que eu quiser para as chaves
+        return {"id" : self.id, "descricao" : self.descricao} # me permite que eu ponha o nome que eu quiser para as chaves
     @staticmethod
     def from_json(dic):
         return Categoria(dic["id"], dic["descricao"]) 
@@ -55,7 +55,7 @@ class CategoriaDAO:
     @classmethod
     def salvar(cls):
         with open("categorias.json", mode="w") as arquivo:
-            json.dump(cls.objetos, arquivo, default = Categoria.to_json, indent=4)
+                json.dump(cls.objetos, arquivo, default = Categoria.to_json, indent=4)
     @classmethod
     def abrir(cls):
         cls.objetos = []

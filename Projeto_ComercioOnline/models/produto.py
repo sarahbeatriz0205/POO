@@ -8,7 +8,7 @@ class Produto:
         self.idCategoria = idCategoria
     
     def to_json(self):
-        return {"id" : self.__idProduto, "descricao" : self.__descricao, "preco" : self.__preco, "estoque" : self.__estoque, "idCategoria" : self.idCategoria} # me permite que eu ponha o nome que eu quiser para as chaves
+        return {"id" : self.idProduto, "descricao" : self.descricao, "preco" : self.preco, "estoque" : self.estoque, "idCategoria" : self.idCategoria} # me permite que eu ponha o nome que eu quiser para as chaves
     @staticmethod
     def from_json(dic):
         return Produto(dic["id"], dic["descricao"], dic["preco"], dic["estoque"], dic["idCategoria"])
@@ -21,14 +21,14 @@ class ProdutoDAO:
     produtos = []
 
     @classmethod
-    def inserir(cls, obj):
+    def inserir(cls, objetoProduto):
         cls.abrir_json()
-        idCompra = 0
+        idProduto = 0
         for objetoProduto in cls.produtos:
             if objetoProduto.idProduto > idProduto: 
                 idProduto = objetoProduto.idProduto
         objetoProduto.idProduto = objetoProduto.idProduto + 1
-        cls.vendas.append(obj)
+        cls.produtos.append(objetoProduto)
         cls.salvar_json()
     @classmethod
     def listar(cls):
@@ -36,7 +36,7 @@ class ProdutoDAO:
         return cls.produtos
     @classmethod
     def listar_id(cls, idProduto):
-        for obj in cls.vendas:
+        for obj in cls.produtos:
             if obj.idProduto == idProduto:
                 return obj
         return None
@@ -44,14 +44,14 @@ class ProdutoDAO:
     def atualizar(cls, obj):
         aux = cls.listar_id(obj.idProduto)
         if aux != None:
-            cls.vendas.remove(aux)
-            cls.vendas.append(obj)
+            cls.produtos.remove(aux)
+            cls.produtos.append(obj)
         cls.salvar_json()
     @classmethod
     def excluir(cls, obj):
         aux = cls.listar_id(obj.idProduto)
         if aux != None:
-            cls.vendas.remove(aux)
+            cls.produtos.remove(aux)
         cls.salvar_json()
     @classmethod
     def salvar_json(cls):
