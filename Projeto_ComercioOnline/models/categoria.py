@@ -1,23 +1,12 @@
 import json
 class Categoria:
     def __init__(self, id, descricao):
-        self.__id = id
-        self.__descricao = descricao
-
-    def set_id(self, id):
-        pass
-    def set_descricao(self, descricao):
-        pass
-
-    def get_id(self):
-        return self._id
-    def get_descricao(self):
-        return self.__descricao
+        self.id = id
+        self.descricao = descricao
 
     def __str__(self):
-        return f"{self.__id} - {self.__descricao}"
+        return f"{self.id} - {self.descricao}"
     
-    @staticmethod
     def to_json(self):
         return {"id" : self.__id, "descricao" : self.__descricao} # me permite que eu ponha o nome que eu quiser para as chaves
     @staticmethod
@@ -26,54 +15,58 @@ class Categoria:
     
 
 class CategoriaDAO:
-    categoria = []
-
-    @classmethod
-    def inserir(cls, categoria):
-        cls.abrir_json()
-        cls.categoria.append(categoria.id)
-        cls.salvar_json()
+    objetos = []             
+    @classmethod              
+    def inserir(cls, obj):
+        cls.abrir()
+        id = 0
+        for aux in cls.objetos:
+            if aux.id > id: id = aux.id
+        obj.id = id + 1    
+        cls.objetos.append(obj)
+        cls.salvar()
     @classmethod
     def listar(cls):
-        cls.abrir_json()
-        return cls.categoria
+        cls.abrir()
+        return cls.objetos
     @classmethod
     def listar_id(cls, id):
-        cls.abrir_json()
-        for i in cls.categoria:
-            if i.get_id() == id:
-                return i
-        return None
+        cls.abrir()
+        for obj in cls.objetos:
+            if obj.id == id: return obj
+        return None    
     @classmethod
-    def atualizar(cls, categoria):
-        cls.abrir_json()
-        aux = cls.listar_id(CategoriaDAO.id)
+    def atualizar(cls, obj):
+        # procurar o objeto que tem o id dado por obj.id
+        aux = cls.listar_id(obj.id)
         if aux != None:
-            cls.categoria.remove(categoria.get_id())
-            cls.categoria.append(categoria)
-        cls.salvar_json()
+            #aux.nome = obj.nome
+            # remove o objeto antigo aux e insere o novo obj
+            cls.objetos.remove(aux)
+            cls.objetos.append(obj)
+            cls.salvar()
     @classmethod
-    def excluir(cls, categoria):
-        cls.abrir_json()
-        aux = cls.listar_id(categoria.id)
+    def excluir(cls, obj):
+        # procurar o objeto que tem o id dado por obj.id
+        aux = cls.listar_id(obj.id)
         if aux != None:
-            cls.categoria.remove(categoria.get_id())
-        cls.salvar_json()
+            cls.objetos.remove(aux)
+            cls.salvar()
     @classmethod
-    def abrir_json(cls):
-        cls.categoria = []
-        try: 
+    def salvar(cls):
+        with open("categorias.json", mode="w") as arquivo:
+            json.dump(cls.objetos, arquivo, default = Categoria.to_json, indent=4)
+    @classmethod
+    def abrir(cls):
+        cls.objetos = []
+        try:
             with open("categorias.json", mode="r") as arquivo:
                 list_dic = json.load(arquivo)
                 for dic in list_dic:
                     c = Categoria.from_json(dic)
-                    cls.categoria.append(c)
+                    cls.objetos.append(c)
         except:
-            pass
-    @classmethod
-    def salvar_json(cls):
-        with open("categorias.json", mode="w") as arquivo:
-            json.dump(cls.categoria, arquivo, default = Categoria.to_json, indent=4)
+            pass            
 
 
 # na criação de um objeto, dizer a categoria com base no objeto de categoria

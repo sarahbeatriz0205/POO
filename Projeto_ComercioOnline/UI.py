@@ -1,7 +1,6 @@
 from models.cliente import Cliente, ClienteDAO
 from models.categoria import Categoria, CategoriaDAO
-# from models.venda import Venda, VendaDAO
-# from models.produto import Produto, ProdutoDAO
+from models.produto import Produto, ProdutoDAO
 
 class UI: # classe estática -> não tem instância     
     def menu():
@@ -25,9 +24,13 @@ class UI: # classe estática -> não tem instância
             if op == 6: UI.categoria_listar()
             if op == 7: UI.categoria_atualizar()
             if op == 8: UI.categoria_excluir()
+            if op == 9: UI.produto_inserir()
+            if op == 10: UI.produto_listar()
+            if op == 11: UI.produto_atualizar()
+            if op == 12: UI.produto_excluir()
 
     def cliente_inserir():
-        #id = int(input("Informe o id: "))
+        # id = int(input("Informe o id: "))
         id = 0
         nome = input("Informe o nome: ")
         email = input("Informe o e-mail: ")
@@ -74,6 +77,36 @@ class UI: # classe estática -> não tem instância
         nome = ""
         c = Categoria(id, nome)
         CategoriaDAO.excluir(c)
+    
+    def produto_inserir():
+        id = 0
+        descricao = input("Informe a descrição: ")
+        preco = float(input("Preço: "))
+        estoque = int(input("Quanto tem no estoque: "))
+        idCategoria = int(input("Id da categoria: "))
+        c = Produto(id, descricao, preco, estoque, idCategoria)
+        CategoriaDAO.inserir(c)
+    def produto_listar():
+        for obj in ProdutoDAO.listar():
+            print(obj)       
+    def produto_atualizar():
+        UI.produto_listar()
+        id = int(input("Informe o id a ser atualizado: "))
+        descricao = input("Informe a nova descrição: ")
+        preco = float(input("Informe o novo preço: "))
+        estoque = int(input("Informe a nova quantidade do estoque: "))
+        idCategoria = int(input("Qual a categoria: "))
+        c = Produto(id, descricao, preco, estoque, idCategoria)
+        ProdutoDAO.atualizar(c)
+    def produto_excluir():
+        UI.produto_listar()
+        id = int(input("Informe o id a ser excluído: "))
+        descricao = ""
+        preco = 0.0
+        estoque = 0
+        idCategoria = 0
+        c = Produto(id, descricao, preco, estoque, idCategoria)
+        ProdutoDAO.excluir(c)
 
 
 UI.main()
