@@ -1,9 +1,0 @@
-[
-    {
-        "id": 1,
-        "descricao": "Prancha",
-        "preco": 100.0,
-        "estoque": 100,
-        "idCategoria": 1
-    }
-]

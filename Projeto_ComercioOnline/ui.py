@@ -1,6 +1,4 @@
-from models.cliente import Cliente, ClienteDAO
-from models.categoria import Categoria, CategoriaDAO
-from models.produto import Produto, ProdutoDAO
+from views import View
 
 class UI:    
     def menu():
@@ -34,56 +32,49 @@ class UI:
             if op == 13: exit("Finalizando... Volte Sempre!")
 
     def cliente_inserir():
-        # id = int(input("Informe o id: "))
-        id = 0
+        # id = 0
         nome = input("Informe o nome: ")
         email = input("Informe o e-mail: ")
         telefone = int(input("Informe seu número de telefone: "))
-        c = Cliente(id, nome, email, telefone)
-        ClienteDAO.inserir(c)
+        # NÃO É NECESSÁRIO CRIAR O OBJETO QUANDO EXISTE O VIEW
+        View.cliente_inserir(nome, email, telefone)
     def cliente_listar():
-        for obj in ClienteDAO.listar():
-            print(obj)       
+        for obj in View.cliente_listar(): 
+            print(obj)     
     def cliente_atualizar():
         UI.cliente_listar()
         id = int(input("Informe o id a ser atualizado: "))
         nome = input("Informe o novo nome: ")
         email = input("Informe o novo e-mail: ")
         telefone = int(input("Informe o novo número"))
-        c = Cliente(id, nome, email, telefone)
-        ClienteDAO.atualizar(c)
+        View.cliente_atualizar(id, nome, email, telefone)
     def cliente_excluir():
         UI.cliente_listar()
         id = int(input("Informe o id a ser excluído: "))
         nome = ""
         email = ""
         telefone = 0
-        c = Cliente(id, nome, email, telefone)
-        ClienteDAO.excluir(c)
+        View.cliente_excluir(id, nome, email, telefone)
 
     def categoria_inserir():
-        id = 0
+        # id = 0
         descricao = input("Informe a descrição: ")
-        c = Categoria(id, descricao)
-        CategoriaDAO.inserir(c)
+        View.categoria_inserir(descricao)
     def categoria_listar():
-        for obj in CategoriaDAO.listar():
+        for obj in View.categoria_listar():
             print(obj)       
     def categoria_atualizar():
         UI.categoria_listar()
         id = int(input("Informe o id a ser atualizado: "))
         descricao = input("Informe a nova descrição: ")
-        c = Categoria(id, descricao)
-        CategoriaDAO.atualizar(c)
+        View.categoria_atualizar(id, descricao)
     def categoria_excluir():
         UI.categoria_listar()
         id = int(input("Informe o id a ser excluído: "))
-        nome = ""
-        c = Categoria(id, nome)
-        CategoriaDAO.excluir(c)
+        descricao = ""
+        View.categoria_excluir(id, descricao)
     
     def produto_inserir():
-        id = 0
         descricao = input("Informe a descrição: ")
         preco = float(input("Preço: "))
         estoque = int(input("Quanto tem no estoque: "))
