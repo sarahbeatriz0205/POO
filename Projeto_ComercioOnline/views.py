@@ -14,7 +14,8 @@ class View:
         c = Cliente(id, nome, email, telefone)
         ClienteDAO.atualizar(c)
     def cliente_excluir(id):
-        pass
+        c = Cliente(id)
+        ClienteDAO.excluir(c)
 
     def categoria_inserir(descricao):
         id = 0
@@ -22,10 +23,11 @@ class View:
     def categoria_listar():
         return CategoriaDAO.listar()
     def categoria_atualizar(id, descricao):
-        c = Cliente(id, descricao)
+        c = Categoria(id, descricao)
         CategoriaDAO.atualizar(c)
     def categoria_excluir(id):
-        pass
+        c = Categoria(id)
+        CategoriaDAO.excluir(c)
 
     def produto_inserir(descricao, preco, estoque):
         id = 0
@@ -33,9 +35,8 @@ class View:
     def produto_listar():
         return ProdutoDAO.listar()
     def produto_atualizar(id, descricao, preco, estoque):
-        c = Cliente(id, descricao, preco, estoque)
+        c = Produto(id, descricao, preco, estoque)
         ProdutoDAO.atualizar(c)
     def produto_excluir(id):
-        pass
-
-    # FAZER O VIEW DO PRODUTO
+        c = Produto(id)
+        ProdutoDAO.excluir(c)

@@ -15,7 +15,7 @@ class UI:
         return int(input("Informe uma opção: "))           
     def main():
         op = 0
-        while op != 13:
+        while op != 14:
             op = UI.menu()
             if op == 1: UI.cliente_inserir()
             if op == 2: UI.cliente_listar()
@@ -29,7 +29,8 @@ class UI:
             if op == 10: UI.produto_listar()
             if op == 11: UI.produto_atualizar()
             if op == 12: UI.produto_excluir()
-            if op == 13: exit("Finalizando... Volte Sempre!")
+            if op == 13: UI.produto_reajustar() # criar o produto_reajustar no DAO e no View
+            if op == 14: exit()
 
     def cliente_inserir():
         # id = 0
@@ -79,10 +80,9 @@ class UI:
         preco = float(input("Preço: "))
         estoque = int(input("Quanto tem no estoque: "))
         idCategoria = int(input("Id da categoria: "))
-        c = Produto(id, descricao, preco, estoque, idCategoria)
-        ProdutoDAO.inserir(c)
+        View.produto_inserir(descricao, preco, estoque, idCategoria)
     def produto_listar():
-        for obj in ProdutoDAO.listar():
+        for obj in View.produto_listar():
             print(obj)       
     def produto_atualizar():
         UI.produto_listar()
@@ -91,8 +91,7 @@ class UI:
         preco = float(input("Informe o novo preço: "))
         estoque = int(input("Informe a nova quantidade do estoque: "))
         idCategoria = int(input("Qual a categoria: "))
-        c = Produto(id, descricao, preco, estoque, idCategoria)
-        ProdutoDAO.atualizar(c)
+        View.produto_atualizar(id, descricao, preco, estoque, idCategoria)
     def produto_excluir():
         UI.produto_listar()
         id = int(input("Informe o id a ser excluído: "))
@@ -100,8 +99,7 @@ class UI:
         preco = 0.0
         estoque = 0
         idCategoria = 0
-        c = Produto(id, descricao, preco, estoque, idCategoria)
-        ProdutoDAO.excluir(c)
+        View.cliente_excluir(id)
 
 
 UI.main()
