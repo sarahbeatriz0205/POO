@@ -13,8 +13,8 @@ class View:
     def cliente_atualizar(id, nome, email, telefone):
         c = Cliente(id, nome, email, telefone)
         ClienteDAO.atualizar(c)
-    def cliente_excluir(id):
-        c = Cliente(id)
+    def cliente_excluir(id, nome, email, telefone):
+        c = Cliente(id, nome, email, telefone)
         ClienteDAO.excluir(c)
 
     def categoria_inserir(descricao):
@@ -25,18 +25,18 @@ class View:
     def categoria_atualizar(id, descricao):
         c = Categoria(id, descricao)
         CategoriaDAO.atualizar(c)
-    def categoria_excluir(id):
-        c = Categoria(id)
+    def categoria_excluir(id, descricao):
+        c = Categoria(id, descricao)
         CategoriaDAO.excluir(c)
 
-    def produto_inserir(descricao, preco, estoque):
+    def produto_inserir(descricao, preco, estoque, idCategoria):
         id = 0
-        ProdutoDAO.inserir(Produto(id, descricao, preco, estoque))
+        ProdutoDAO.inserir(Produto(id, descricao, preco, estoque, idCategoria))
     def produto_listar():
         return ProdutoDAO.listar()
-    def produto_atualizar(id, descricao, preco, estoque):
-        c = Produto(id, descricao, preco, estoque)
+    def produto_atualizar(id, descricao, preco, estoque, idCategoria):
+        c = Produto(id, descricao, preco, estoque, idCategoria)
         ProdutoDAO.atualizar(c)
-    def produto_excluir(id):
-        c = Produto(id)
+    def produto_excluir(id, descricao, preco, estoque, idCategoria):
+        c = Produto(id, descricao, preco, estoque, idCategoria)
         ProdutoDAO.excluir(c)
