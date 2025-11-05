@@ -1,0 +1,15 @@
+- abrir_json e salvar_json deve ser privado, já que na realidade ninguém quer saber se eu tô abrindo ou salvando o arquivo
+- criar o atributo no __init__ com o set (self.set_x) é recomendado
+
+
+------ FEITOS ------
+- parte do cliente_criar_admin feita no View
+
+
+
+------ AJUSTES ------
+- ajustar o produto_reajuste lá na UI
+- criar o atributo no __init__ com o set (self.set_x)
+- criar o cliente_autenticacao no View, pra ver se aquele login é válido
+- criar o menu pra entrar no sistema e ir para as opções disponíveis
+- atributo __usuario = None na UI -> acessar com @classmethod (cls.__usuario)

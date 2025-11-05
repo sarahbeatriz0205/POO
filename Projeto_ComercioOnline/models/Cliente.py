@@ -1,19 +1,20 @@
 import json
 class Cliente:
-    def __init__(self, idCliente, nome, email, telefone):
+    def __init__(self, idCliente, nome, email, telefone, senha):
         self.idCliente = idCliente
         self.nome = nome
         self.email =  email
         self.telefone = telefone
+        self.senha = senha
     
     def __str__(self):
         return f"{self.idCliente} - {self.nome} - {self.email} - {self.telefone}"
     
     def to_json(self):
-        return {"idCliente" : self.idCliente, "nome" : self.nome, "email" : self.email, "telefone" : self.telefone} # me permite que eu ponha o nome que eu quiser para as chaves
+        return {"idCliente" : self.idCliente, "nome" : self.nome, "email" : self.email, "telefone" : self.telefone, "senha" : self.senha} # me permite que eu ponha o nome que eu quiser para as chaves
     @staticmethod
     def from_json(dic):
-        return Cliente(dic["idCliente"], dic["nome"], dic["email"], dic["telefone"]) 
+        return Cliente(dic["idCliente"], dic["nome"], dic["email"], dic["telefone"], dic["senha"]) 
 
 class ClienteDAO:
     clientes = []   # atributo da classe ClienteDAO -> DAO = Um objeto usado para acessar e salvar dados de outra classe          
