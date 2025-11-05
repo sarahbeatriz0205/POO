@@ -33,7 +33,7 @@ class ClienteDAO:
         return cls.clientes
     @classmethod
     def listar_id(cls, idCliente):
-        cls.abrir_json() # tenho que abrir o json
+        cls.abrir() # tenho que abrir o json
         for obj in cls.clientes: # percorrer a lista
             if obj.idCliente == idCliente: return obj
         return None    

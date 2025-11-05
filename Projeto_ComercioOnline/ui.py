@@ -99,7 +99,7 @@ class UI:
         preco = 0.0
         estoque = 0
         idCategoria = 0
-        View.cliente_excluir(id)
+        View.produto_excluir(id, descricao, preco, estoque, idCategoria)
 
 
 UI.main()
