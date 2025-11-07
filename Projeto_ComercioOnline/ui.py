@@ -37,8 +37,9 @@ class UI:
         nome = input("Informe o nome: ")
         email = input("Informe o e-mail: ")
         telefone = int(input("Informe seu número de telefone: "))
+        senha = input("Informe sua senha: ")
         # NÃO É NECESSÁRIO CRIAR O OBJETO QUANDO EXISTE O VIEW
-        View.cliente_inserir(nome, email, telefone)
+        View.cliente_inserir(nome, email, telefone, senha)
     def cliente_listar():
         for obj in View.cliente_listar(): 
             print(obj)     
@@ -48,14 +49,16 @@ class UI:
         nome = input("Informe o novo nome: ")
         email = input("Informe o novo e-mail: ")
         telefone = int(input("Informe o novo número"))
-        View.cliente_atualizar(id, nome, email, telefone)
+        senha = input("Nova senha: ")
+        View.cliente_atualizar(id, nome, email, telefone, senha)
     def cliente_excluir():
         UI.cliente_listar()
         id = int(input("Informe o id a ser excluído: "))
         nome = ""
         email = ""
         telefone = 0
-        View.cliente_excluir(id, nome, email, telefone)
+        senha = ""
+        View.cliente_excluir(id, nome, email, telefone, senha)
 
     def categoria_inserir():
         # id = 0

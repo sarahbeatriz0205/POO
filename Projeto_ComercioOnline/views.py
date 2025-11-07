@@ -18,8 +18,8 @@ class View:
     def cliente_atualizar(id, nome, email, telefone, senha):
         c = Cliente(id, nome, email, telefone, senha)
         ClienteDAO.atualizar(c)
-    def cliente_excluir(id, nome, email, telefone):
-        c = Cliente(id, nome, email, telefone)
+    def cliente_excluir(id, nome, email, telefone, senha):
+        c = Cliente(id, nome, email, telefone, senha)
         ClienteDAO.excluir(c)
 
     def categoria_inserir(descricao):
