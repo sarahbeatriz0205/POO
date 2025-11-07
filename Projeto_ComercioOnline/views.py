@@ -41,7 +41,7 @@ class View:
         ProdutoDAO.inserir(Produto(id, descricao, preco, estoque, idCategoria))
     def produto_listar():
         return ProdutoDAO.listar()
-<<<<<<< HEAD
+
     def produto_listar_id(id):
         return ProdutoDAO.listar_id(id)
     def produto_atualizar(id, descricao, preco, estoque):
@@ -54,11 +54,10 @@ class View:
         for obj in ProdutoDAO.listar():
             obj.preco = obj.preco * (1 + percentual)
             ProdutoDAO.atualizar(obj)
-=======
+
     def produto_atualizar(id, descricao, preco, estoque, idCategoria):
         c = Produto(id, descricao, preco, estoque, idCategoria)
         ProdutoDAO.atualizar(c)
     def produto_excluir(id, descricao, preco, estoque, idCategoria):
         c = Produto(id, descricao, preco, estoque, idCategoria)
         ProdutoDAO.excluir(c)
->>>>>>> refs/remotes/origin/main
