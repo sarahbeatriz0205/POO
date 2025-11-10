@@ -1,11 +1,11 @@
 import json
 class Produto:
     def __init__(self, idProduto, descricao, preco, estoque, idCategoria):
-        self.idProduto = idProduto
-        self.descricao = descricao
-        self.preco = preco
-        self.estoque = estoque
-        self.idCategoria = idCategoria
+        self.set_idProduto(idProduto)
+        self.set_descricao(descricao)
+        self.set_preco(preco)
+        self.set_estoque(estoque)
+        self.set_idCategoria(idCategoria)
     
     def to_json(self):
         return {"id" : self.idProduto, "descricao" : self.descricao, "preco" : self.preco, "estoque" : self.estoque, "idCategoria" : self.idCategoria} # me permite que eu ponha o nome que eu quiser para as chaves

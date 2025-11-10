@@ -1,7 +1,15 @@
 from views import View
 
-class UI:    
-    def menu():
+class UI:  
+    __usuario = None
+
+    def menu_visitante():
+        print("1-Entrar no Sistema, 2-Abrir Conta, 9-Fim")
+        op = int(input("Informe uma opção: "))           
+        if op == 1: UI.visitante_entrar()
+        if op == 2: UI.visitante_criar_conta()
+        return op  
+    def menu_admin():
         print("Clientes")
         print("1-Inserir, 2-Listar, 3-Atualizar, 4-Excluir")
         print()
@@ -12,7 +20,21 @@ class UI:
         print("9-Inserir, 10-Listar, 11-Atualizar, 12-Excluir")
         print()
         print("13 - Fim")
-        return int(input("Informe uma opção: "))           
+        return int(input("Informe uma opção: "))   
+    def menu_cliente():
+        print("1-Listar produtos")
+        print("2-Inserir produto no carrinho")
+        print("3-Visualizar carrinho")
+        print("4-Comprar carrinho")
+        print("5-Listar minhas compras")
+        print("9-Sair")
+        op = int(input("Informe uma opção: "))           
+        if op == 1: pass
+        if op == 2: pass
+        if op == 3: pass
+        if op == 4: pass
+        if op == 5: pass
+        if op == 9: UI.usuario_sair()        
     def main():
         op = 0
         while op != 14:
@@ -103,6 +125,10 @@ class UI:
         estoque = 0
         idCategoria = 0
         View.produto_excluir(id, descricao, preco, estoque, idCategoria)
+    def produto_reajuste():
+        UI.produto_listar()
+        percentual = float(input("Informe o percentual de ajuste: "))
+        View.produto_reajuste(percentual)
 
 
 UI.main()

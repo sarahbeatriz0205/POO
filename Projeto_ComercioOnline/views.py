@@ -1,4 +1,4 @@
-from models.Cliente import Cliente, ClienteDAO
+from models.cliente import Cliente, ClienteDAO
 from models.categoria import Categoria, CategoriaDAO
 from models.produto import Produto, ProdutoDAO 
 
@@ -54,7 +54,6 @@ class View:
         for obj in ProdutoDAO.listar():
             obj.preco = obj.preco * (1 + percentual)
             ProdutoDAO.atualizar(obj)
-
     def produto_atualizar(id, descricao, preco, estoque, idCategoria):
         c = Produto(id, descricao, preco, estoque, idCategoria)
         ProdutoDAO.atualizar(c)
