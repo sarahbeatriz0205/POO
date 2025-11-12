@@ -3,14 +3,22 @@ from models.categoria import Categoria, CategoriaDAO
 from models.produto import Produto, ProdutoDAO 
 
 class View:
-    def cliente_criar_admin(nome, email, telefone, senha):
+    def cliente_criar_admin(email, senha):
         id = 0
+        nome = ""
+        telefone = 0
         for obj in ClienteDAO.listar():
-            if obj.email == "@admin.com": return
+            if obj.email == "admin" and senha == "admin": return
         ClienteDAO.inserir(Cliente(id, nome, email, telefone, senha)) # se o if não for verdadeiro, ele passa para a próxima linha e cria um novo admin
+    def cliente_autenticar(email, senha):
+        for obj in View.cliente_listar():
+            if obj.get_email() == email and obj.get_senha() == senha: 
+                return { "email": obj.get_email(), "senha": obj.get_senha() }
+        return None
     def cliente_inserir(nome, email, telefone, senha):
         id = 0
-        ClienteDAO.inserir(Cliente(id, nome, email, telefone, senha))
+        c = Cliente(id, nome, email, telefone, senha)
+        ClienteDAO.inserir(c)
     def cliente_listar():
         return ClienteDAO.listar()
     def cliente_listar_id(id):
@@ -52,11 +60,18 @@ class View:
         ProdutoDAO.excluir(c)
     def produto_reajuste(percentual):
         for obj in ProdutoDAO.listar():
-            obj.preco = obj.preco * (1 + percentual)
-            ProdutoDAO.atualizar(obj)
+            obj.set_preco() = obj.get_preco() * (1 + percentual)
+            ProdutoDAO.atualizar(obj.get_preco)
     def produto_atualizar(id, descricao, preco, estoque, idCategoria):
         c = Produto(id, descricao, preco, estoque, idCategoria)
         ProdutoDAO.atualizar(c)
     def produto_excluir(id, descricao, preco, estoque, idCategoria):
         c = Produto(id, descricao, preco, estoque, idCategoria)
         ProdutoDAO.excluir(c)
+    def listar_produtos(nome):
+        for obj in ProdutoDAO.listar():
+            if obj.get_nome() == nome:
+                if obj.get_estoque() == None:
+                    return obj
+            return None
+            

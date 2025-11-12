@@ -9,6 +9,8 @@ class UI:
         if op == 1: UI.visitante_entrar()
         if op == 2: UI.visitante_criar_conta()
         return op  
+
+    # tá tudo ok por enquanto
     def menu_admin():
         print("Clientes")
         print("1-Inserir, 2-Listar, 3-Atualizar, 4-Excluir")
@@ -20,7 +22,8 @@ class UI:
         print("9-Inserir, 10-Listar, 11-Atualizar, 12-Excluir")
         print()
         print("13 - Fim")
-        return int(input("Informe uma opção: "))   
+        return int(input("Informe uma opção: ")) 
+      
     def menu_cliente():
         print("1-Listar produtos")
         print("2-Inserir produto no carrinho")
@@ -29,30 +32,45 @@ class UI:
         print("5-Listar minhas compras")
         print("9-Sair")
         op = int(input("Informe uma opção: "))           
-        if op == 1: pass
+        if op == 1: UI.listar_produtos()
         if op == 2: pass
         if op == 3: pass
         if op == 4: pass
         if op == 5: pass
         if op == 9: UI.usuario_sair()        
     def main():
+        UI.menu_visitante()
+        View.cliente_criar_admin(UI.visitante_entrar()) #TypeError: View.cliente_criar_admin() missing 1 required positional argument: 'senha' -> ajeitar no Views
+    
+    @classmethod
+    def menu(cls):
         op = 0
-        while op != 14:
-            op = UI.menu()
-            if op == 1: UI.cliente_inserir()
-            if op == 2: UI.cliente_listar()
-            if op == 3: UI.cliente_atualizar()
-            if op == 4: UI.cliente_excluir()
-            if op == 5: UI.categoria_inserir()
-            if op == 6: UI.categoria_listar()
-            if op == 7: UI.categoria_atualizar()
-            if op == 8: UI.categoria_excluir()
-            if op == 9: UI.produto_inserir()
-            if op == 10: UI.produto_listar()
-            if op == 11: UI.produto_atualizar()
-            if op == 12: UI.produto_excluir()
-            if op == 13: UI.produto_reajustar() # criar o produto_reajustar no DAO e no View
-            if op == 14: exit()
+        while op != 9:
+            if cls.__usuario == None: 
+                # usuário não está logado
+                op = UI.menu_visitante()
+            else:
+                # usuário está logado, verifica se é o admin
+                admin = cls.__usuario["nome"] == "admin"
+                # mensagem de bem-vindo
+                print("IF Comércio Eletrônico 2025")
+                print("Bem-vindo(a), " + cls.__usuario["nome"])
+                # menu do usuário: admin ou cliente
+                if admin: UI.menu_admin()
+                else: UI.menu_cliente()
+    @classmethod
+    def visitante_entrar(cls):
+        email = input("Informe o e-mail: ")
+        senha = input("Informe a senha: ")
+        cls.__usuario = View.cliente_autenticar(email, senha)
+        if cls.__usuario == None: print("Usuário ou senha inválidos")
+
+    def visitante_criar_conta():
+        UI.cliente_inserir()
+    
+    @classmethod
+    def usuario_sair(cls):
+        cls.__usuario = None
 
     def cliente_inserir():
         # id = 0
@@ -129,6 +147,10 @@ class UI:
         UI.produto_listar()
         percentual = float(input("Informe o percentual de ajuste: "))
         View.produto_reajuste(percentual)
+    def listar_produtos():
+        UI.produto_listar()
+        nome = input("Qual produto você deseja buscar? ")
+        View.listar_produtos(nome)
 
 
 UI.main()

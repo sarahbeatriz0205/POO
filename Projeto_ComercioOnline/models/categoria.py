@@ -5,8 +5,6 @@ class Categoria:
         self.set_descricao(descricao)
     
     def set_id(self, idCategoria):
-        if idCategoria <= 0:
-            raise ValueError("O ID deve ser maior que 0!")
         self.__id = idCategoria
     def set_descricao(self, descricao):
         if descricao == "":
@@ -31,7 +29,7 @@ class CategoriaDAO:
         id = 0
         for aux in cls.objetos:
             if aux.get_id() > id: id = aux.get_id()
-        obj.get_id() = id + 1    
+        obj.set_id = id + 1    
         cls.objetos.append(obj)
         cls.salvar()
     @classmethod
