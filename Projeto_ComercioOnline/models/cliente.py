@@ -10,12 +10,8 @@ class Cliente:
     def set_idCliente(self, idCliente):
         self.__idCliente = idCliente
     def set_nome(self, nome):
-        if nome == "":
-            raise ValueError("Campo não pode ser vazio!")
         self.__nome = nome
     def set_email(self, email):
-        if email == "":
-            raise ValueError("Campo não pode ser vazio!")
         self.__email = email
     def set_telefone(self, telefone):
         self.__telefone = telefone
@@ -50,7 +46,7 @@ class ClienteDAO:
         idC = 0 # aux.idCliente sempre vai ser maior que idC
         for aux in cls.clientes: # aux -> é um objeto da classe Cliente que está armazenado no clientes.json
             if aux.get_idCliente() > idC: idC = aux.get_idCliente() # aux.idCliente -> identifica o id do objeto aux
-        obj.set_idCliente = idC + 1    #obj vai ser o objeto que foi recebido no momento
+        obj.set_idCliente(idC + 1)    #obj vai ser o objeto que foi recebido no momento
         cls.clientes.append(obj)
         cls.salvar()
     @classmethod

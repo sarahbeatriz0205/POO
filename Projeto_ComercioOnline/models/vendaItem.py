@@ -1,19 +1,31 @@
 import json
 class VendaItem:
     def __init__(self, idVendaItem, quantidade, preco, idVenda, idProduto):
-        self.idVendaItem = idVendaItem
-        self.quantidade = quantidade
-        self.preco = preco
-        self.idVenda = idVenda
-        self.idProduto = idProduto
+        self.set_idVendaItem(idVendaItem)
+        self.set_quantidade(quantidade)
+        self.set_preco(preco) # da compra atual
+        self.set_idVenda(idVenda)
+        self.set_idProduto(idProduto)
+
+    def get_idVendaItem(self):
+        return self.__idVendaItem
+    def get_quantidade(self):
+        return self.__quantidade
+    def get_preco(self):
+        return self.__preco
+    def get_idVenda(self):
+        return self.__idVenda
+    def get_idProduto(self):
+        return self.__idProduto
+
     
     def to_json(self):
-        return {"idVendaItem" : self.idVendaItem, "quantidade" : self.quantidade, "preco" : self.preco, "idVenda" : self.idVenda, "idProduto" : self.idProduto} # me permite que eu ponha o nome que eu quiser para as chaves
+        return {"idVendaItem" : self.__idVendaItem, "quantidade" : self.__quantidade, "preco" : self.__preco, "idVenda" : self.__idVenda, "idProduto" : self.__idProduto} # me permite que eu ponha o nome que eu quiser para as chaves
     @staticmethod
     def from_json(dic):
         return VendaItem(dic["idVendaItem"], dic["quantidade"], dic["preco"], dic["idVenda"], dic["idVenda"], dic["idProduto"]) 
     def __str__(self):
-        return f""
+        return f"{self.__idVendaItem}"
     
 class VendaItemDAO:
     venda_item = []
@@ -23,8 +35,8 @@ class VendaItemDAO:
         cls.abrir_json()
         idVendaItem = 0 # aux.idCliente sempre vai ser maior que idC
         for aux in cls.venda_item: # aux -> é um objeto da classe Cliente que está armazenado no clientes.json
-            if aux.idVendaItem > idVendaItem: idVendaItem = aux.idVendaItem # aux.idCliente -> identifica o id do objeto aux
-        objeto.idVendaItem = idVendaItem + 1    #obj vai ser o objeto que foi recebido no momento
+            if aux.get_idVendaItem() > idVendaItem: idVendaItem = aux.get_idVendaItem() # aux.idCliente -> identifica o id do objeto aux
+        objeto.set_idVendaItem(idVendaItem + 1)    #obj vai ser o objeto que foi recebido no momento
         cls.venda_item.append(objeto)
         cls.salvar_json()
     @classmethod
@@ -35,18 +47,18 @@ class VendaItemDAO:
     def listar_id(cls, idVendaItem):
         cls.abrir_json()
         for objetoVendaItem in cls.venda_item:
-            if objetoVendaItem.idVendaItem == idVendaItem:
+            if objetoVendaItem.get_idVendaItem() == idVendaItem:
                 return objetoVendaItem
             return None
     @classmethod
     def atualizar(cls, objetoVendaItem):
-        aux = cls.listar_id(objetoVendaItem.idVendaItem)
+        aux = cls.listar_id(objetoVendaItem.get_idVendaItem())
         if aux != None:
             cls.venda_item.remove(aux)
             cls.venda_item.append(objetoVendaItem)
     @classmethod
     def excluir(cls, objetoVendaItem):
-        aux = cls.listar_id(objetoVendaItem.idVendaItem)
+        aux = cls.listar_id(objetoVendaItem.get_idVendaItem())
         if aux != None:
             cls.venda_item.remove(aux)
             cls.salvar_json()

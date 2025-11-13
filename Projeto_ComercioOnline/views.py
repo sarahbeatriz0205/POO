@@ -1,19 +1,23 @@
 from models.cliente import Cliente, ClienteDAO
 from models.categoria import Categoria, CategoriaDAO
 from models.produto import Produto, ProdutoDAO 
+from models.vendaItem import VendaItem, VendaItemDAO
+from models.venda import Venda, VendaDAO
 
 class View:
+    @staticmethod
     def cliente_criar_admin(email, senha):
         id = 0
         nome = ""
         telefone = 0
         for obj in ClienteDAO.listar():
-            if obj.email == "admin" and senha == "admin": return
+            if obj.get_email() == "admin": return
         ClienteDAO.inserir(Cliente(id, nome, email, telefone, senha)) # se o if não for verdadeiro, ele passa para a próxima linha e cria um novo admin
+    @staticmethod
     def cliente_autenticar(email, senha):
         for obj in View.cliente_listar():
-            if obj.get_email() == email and obj.get_senha() == senha: 
-                return { "email": obj.get_email(), "senha": obj.get_senha() }
+            if obj.get_email() == email: 
+                return { "email": obj.get_email(), "senha" : obj.get_senha()}
         return None
     def cliente_inserir(nome, email, telefone, senha):
         id = 0
@@ -60,7 +64,7 @@ class View:
         ProdutoDAO.excluir(c)
     def produto_reajuste(percentual):
         for obj in ProdutoDAO.listar():
-            obj.set_preco() = obj.get_preco() * (1 + percentual)
+            obj.set_preco(obj.get_preco() * (1 + percentual))
             ProdutoDAO.atualizar(obj.get_preco)
     def produto_atualizar(id, descricao, preco, estoque, idCategoria):
         c = Produto(id, descricao, preco, estoque, idCategoria)
@@ -74,4 +78,15 @@ class View:
                 if obj.get_estoque() == None:
                     return obj
             return None
+    
+    def inserir_produto():
+        pass
+    def estado_carrinho():
+        pass
+    def finalizar_compra():
+        pass
+    def listar_compras():
+        pass
+    def mostrar_comprovante():
+        pass
             

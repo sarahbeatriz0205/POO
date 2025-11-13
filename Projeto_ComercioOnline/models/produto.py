@@ -6,15 +6,26 @@ class Produto:
         self.set_preco(preco)
         self.set_estoque(estoque)
         self.set_idCategoria(idCategoria)
+
+    def get_idProduto(self):
+        return self.__idProduto
+    def get_descricao(self):
+        return self.__descricao
+    def get_preco(self):
+        return self.__descricao
+    def get_descricao(self):
+        return self.__descricao
+    def get_descricao(self):
+        return self.__descricao
     
     def to_json(self):
-        return {"id" : self.idProduto, "descricao" : self.descricao, "preco" : self.preco, "estoque" : self.estoque, "idCategoria" : self.idCategoria} # me permite que eu ponha o nome que eu quiser para as chaves
+        return {"id" : self.__idProduto, "descricao" : self.__descricao, "preco" : self.__preco, "estoque" : self.__estoque, "idCategoria" : self.__idCategoria} # me permite que eu ponha o nome que eu quiser para as chaves
     @staticmethod
     def from_json(dic):
         return Produto(dic["id"], dic["descricao"], dic["preco"], dic["estoque"], dic["idCategoria"])
     
     def __str__(self):
-        return f"ID do produto = {self.idProduto} - Descrição = {self.descricao} - Preço = {self.preco} - Estoque = {self.estoque} - ID da categoria = {self.idCategoria}"
+        return f"ID do produto = {self.__idProduto} - Descrição = {self.__descricao} - Preço = {self.__preco} - Estoque = {self.__estoque} - ID da categoria = {self.__idCategoria}"
 
 
 class ProdutoDAO:
@@ -25,9 +36,9 @@ class ProdutoDAO:
         cls.abrir_json()
         idProduto = 0
         for objetoProduto in cls.produtos:
-            if objetoProduto.idProduto > idProduto: 
+            if objetoProduto.get_idProduto() > idProduto: 
                 idProduto = objetoProduto.idProduto
-        objetoProduto.idProduto = objetoProduto.idProduto + 1
+        objetoProduto.set_idProduto(objetoProduto.get_idProduto() + 1)
         cls.produtos.append(objetoProduto)
         cls.salvar_json()
     @classmethod
@@ -37,19 +48,19 @@ class ProdutoDAO:
     @classmethod
     def listar_id(cls, idProduto):
         for obj in cls.produtos:
-            if obj.idProduto == idProduto:
+            if obj.get_idProduto() == idProduto:
                 return obj
         return None
     @classmethod
     def atualizar(cls, obj):
-        aux = cls.listar_id(obj.idProduto)
+        aux = cls.listar_id(obj.get_idProduto())
         if aux != None:
             cls.produtos.remove(aux)
             cls.produtos.append(obj)
         cls.salvar_json()
     @classmethod
     def excluir(cls, obj):
-        aux = cls.listar_id(obj.idProduto)
+        aux = cls.listar_id(obj.get_idProduto())
         if aux != None:
             cls.produtos.remove(aux)
         cls.salvar_json()

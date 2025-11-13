@@ -12,6 +12,9 @@ class UI:
 
     # tá tudo ok por enquanto
     def menu_admin():
+        print("\n")
+        print("Seja Bem Vindo(a), Administrador(a)!")
+        print("\n")
         print("Clientes")
         print("1-Inserir, 2-Listar, 3-Atualizar, 4-Excluir")
         print()
@@ -22,9 +25,23 @@ class UI:
         print("9-Inserir, 10-Listar, 11-Atualizar, 12-Excluir")
         print()
         print("13 - Fim")
-        return int(input("Informe uma opção: ")) 
+        op = int(input("Informe uma opção: "))
+        if op == 1: UI.cliente_inserir()
+        if op == 2: UI.cliente_listar()
+        if op == 3: UI.cliente_atualizar
+        if op == 4: UI.cliente_excluir()
+        if op == 5: UI.categoria_inserir()
+        if op == 6: UI.categoria_listar()
+        if op == 7: UI.categoria_atualizar()
+        if op == 8: UI.categoria_excluir()
+        if op == 9: UI.produto_inserir()
+        if op == 10: UI.produto_listar()
+        if op == 11: UI.produto_atualizar()
+        if op == 12: UI.produto_excluir()
+        if op == 13: UI.usuario_sair()
       
     def menu_cliente():
+        print("\n")
         print("1-Listar produtos")
         print("2-Inserir produto no carrinho")
         print("3-Visualizar carrinho")
@@ -33,37 +50,27 @@ class UI:
         print("9-Sair")
         op = int(input("Informe uma opção: "))           
         if op == 1: UI.listar_produtos()
-        if op == 2: pass
-        if op == 3: pass
-        if op == 4: pass
-        if op == 5: pass
-        if op == 9: UI.usuario_sair()        
+        if op == 2: UI.inserir_produto()
+        if op == 3: UI.estado_carrinho() #oq tem e quantas coisas tem
+        if op == 4: UI.finalizar_compra()
+        if op == 5: UI.listar_compras()
+        if op == 9: UI.usuario_sair() 
+        return op       
     def main():
+        View.cliente_criar_admin("admin", "admin")
         UI.menu_visitante()
-        View.cliente_criar_admin(UI.visitante_entrar()) #TypeError: View.cliente_criar_admin() missing 1 required positional argument: 'senha' -> ajeitar no Views
     
-    @classmethod
-    def menu(cls):
-        op = 0
-        while op != 9:
-            if cls.__usuario == None: 
-                # usuário não está logado
-                op = UI.menu_visitante()
-            else:
-                # usuário está logado, verifica se é o admin
-                admin = cls.__usuario["nome"] == "admin"
-                # mensagem de bem-vindo
-                print("IF Comércio Eletrônico 2025")
-                print("Bem-vindo(a), " + cls.__usuario["nome"])
-                # menu do usuário: admin ou cliente
-                if admin: UI.menu_admin()
-                else: UI.menu_cliente()
+    # visitante_entrar e visitante_criar_conta() ok!
     @classmethod
     def visitante_entrar(cls):
         email = input("Informe o e-mail: ")
         senha = input("Informe a senha: ")
         cls.__usuario = View.cliente_autenticar(email, senha)
         if cls.__usuario == None: print("Usuário ou senha inválidos")
+        if email == "admin": UI.menu_admin()
+        else: 
+            for obj in View.cliente_listar():
+                if email == obj.get_email(): UI.menu_cliente()
 
     def visitante_criar_conta():
         UI.cliente_inserir()
@@ -78,7 +85,6 @@ class UI:
         email = input("Informe o e-mail: ")
         telefone = int(input("Informe seu número de telefone: "))
         senha = input("Informe sua senha: ")
-        # NÃO É NECESSÁRIO CRIAR O OBJETO QUANDO EXISTE O VIEW
         View.cliente_inserir(nome, email, telefone, senha)
     def cliente_listar():
         for obj in View.cliente_listar(): 

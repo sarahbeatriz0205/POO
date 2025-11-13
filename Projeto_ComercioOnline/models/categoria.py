@@ -3,13 +3,11 @@ class Categoria:
     def __init__(self, id, descricao):
         self.set_id(id)
         self.set_descricao(descricao)
-    
-    def set_id(self, idCategoria):
-        self.__id = idCategoria
-    def set_descricao(self, descricao):
-        if descricao == "":
-            raise ValueError("Campo não pode ser vazio!")
-        self.__descricao = descricao
+
+    def get_id(self):
+        return self.__id
+    def get_descricao(self):
+        return self.__descricao
 
     def __str__(self):
         return f"{self.__id} - {self.__descricao}"
@@ -29,7 +27,7 @@ class CategoriaDAO:
         id = 0
         for aux in cls.objetos:
             if aux.get_id() > id: id = aux.get_id()
-        obj.set_id = id + 1    
+        obj.set_id(id + 1)    
         cls.objetos.append(obj)
         cls.salvar()
     @classmethod
