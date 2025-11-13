@@ -10,7 +10,6 @@ class UI:
         if op == 2: UI.visitante_criar_conta()
         return op  
 
-    # tá tudo ok por enquanto
     def menu_admin():
         print("\n")
         print("Seja Bem Vindo(a), Administrador(a)!")
@@ -25,20 +24,23 @@ class UI:
         print("9-Inserir, 10-Listar, 11-Atualizar, 12-Excluir")
         print()
         print("13 - Fim")
-        op = int(input("Informe uma opção: "))
-        if op == 1: UI.cliente_inserir()
-        if op == 2: UI.cliente_listar()
-        if op == 3: UI.cliente_atualizar
-        if op == 4: UI.cliente_excluir()
-        if op == 5: UI.categoria_inserir()
-        if op == 6: UI.categoria_listar()
-        if op == 7: UI.categoria_atualizar()
-        if op == 8: UI.categoria_excluir()
-        if op == 9: UI.produto_inserir()
-        if op == 10: UI.produto_listar()
-        if op == 11: UI.produto_atualizar()
-        if op == 12: UI.produto_excluir()
-        if op == 13: UI.usuario_sair()
+        op = 0
+        while op != 13:
+            op = int(input("Informe uma opção: "))
+        
+            if op == 1: UI.cliente_inserir()
+            if op == 2: UI.cliente_listar()
+            if op == 3: UI.cliente_atualizar
+            if op == 4: UI.cliente_excluir()
+            if op == 5: UI.categoria_inserir()
+            if op == 6: UI.categoria_listar()
+            if op == 7: UI.categoria_atualizar()
+            if op == 8: UI.categoria_excluir()
+            if op == 9: UI.produto_inserir()
+            if op == 10: UI.produto_listar()
+            if op == 11: UI.produto_atualizar()
+            if op == 12: UI.produto_excluir()
+            if op == 13: UI.usuario_sair()
       
     def menu_cliente():
         print("\n")
@@ -48,19 +50,21 @@ class UI:
         print("4-Comprar carrinho")
         print("5-Listar minhas compras")
         print("9-Sair")
-        op = int(input("Informe uma opção: "))           
-        if op == 1: UI.listar_produtos()
-        if op == 2: UI.inserir_produto()
-        if op == 3: UI.estado_carrinho() #oq tem e quantas coisas tem
-        if op == 4: UI.finalizar_compra()
-        if op == 5: UI.listar_compras()
-        if op == 9: UI.usuario_sair() 
+        op = 0
+        while op != 9:
+            op = int(input("Informe uma opção: "))  
+                 
+            if op == 1: UI.listar_produtos()
+            if op == 2: UI.inserir_produto()
+            if op == 3: UI.estado_carrinho()
+            if op == 4: UI.finalizar_compra()
+            if op == 5: UI.listar_compras()
+            if op == 9: UI.usuario_sair() 
         return op       
     def main():
         View.cliente_criar_admin("admin", "admin")
         UI.menu_visitante()
-    
-    # visitante_entrar e visitante_criar_conta() ok!
+        
     @classmethod
     def visitante_entrar(cls):
         email = input("Informe o e-mail: ")
@@ -125,11 +129,12 @@ class UI:
         View.categoria_excluir(id, descricao)
     
     def produto_inserir():
+        id = 0
         descricao = input("Informe a descrição: ")
         preco = float(input("Preço: "))
         estoque = int(input("Quanto tem no estoque: "))
         idCategoria = int(input("Id da categoria: "))
-        View.produto_inserir(descricao, preco, estoque, idCategoria)
+        View.produto_inserir(id, descricao, preco, estoque, idCategoria)
     def produto_listar():
         for obj in View.produto_listar():
             print(obj)       
@@ -154,9 +159,9 @@ class UI:
         percentual = float(input("Informe o percentual de ajuste: "))
         View.produto_reajuste(percentual)
     def listar_produtos():
-        UI.produto_listar()
-        nome = input("Qual produto você deseja buscar? ")
-        View.listar_produtos(nome)
+        descricao = input("Qual produto você deseja buscar? ")
+        resultado = View.listar_produtos(descricao)
+        print(resultado)
 
 
 UI.main()

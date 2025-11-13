@@ -6,6 +6,21 @@ class Produto:
         self.set_preco(preco)
         self.set_estoque(estoque)
         self.set_idCategoria(idCategoria)
+    
+    def set_idProduto(self, idProduto):
+        self.__idProduto = idProduto
+
+    def set_descricao(self, descricao):
+        self.__descricao = descricao
+
+    def set_preco(self, preco):
+        self.__preco = preco
+
+    def set_estoque(self, estoque):
+        self.__estoque = estoque
+
+    def set_idCategoria(self, idCategoria):
+        self.__idCategoria = idCategoria
 
     def get_idProduto(self):
         return self.__idProduto
@@ -37,7 +52,7 @@ class ProdutoDAO:
         idProduto = 0
         for objetoProduto in cls.produtos:
             if objetoProduto.get_idProduto() > idProduto: 
-                idProduto = objetoProduto.idProduto
+                idProduto = objetoProduto.get_idProduto()
         objetoProduto.set_idProduto(objetoProduto.get_idProduto() + 1)
         cls.produtos.append(objetoProduto)
         cls.salvar_json()

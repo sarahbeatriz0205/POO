@@ -3,6 +3,13 @@ class Categoria:
     def __init__(self, id, descricao):
         self.set_id(id)
         self.set_descricao(descricao)
+    
+    def set_id(self, id):
+        self.__id = id
+
+    def set_descricao(self, descricao):
+        self.__descricao = descricao
+
 
     def get_id(self):
         return self.__id

@@ -11,7 +11,7 @@ class View:
         nome = ""
         telefone = 0
         for obj in ClienteDAO.listar():
-            if obj.get_email() == "admin": return
+            if obj.get_email() == "admin" and obj.get_senha() == "admin": return
         ClienteDAO.inserir(Cliente(id, nome, email, telefone, senha)) # se o if não for verdadeiro, ele passa para a próxima linha e cria um novo admin
     @staticmethod
     def cliente_autenticar(email, senha):
@@ -48,9 +48,10 @@ class View:
         c = Categoria(id, descricao)
         CategoriaDAO.excluir(c)
 
-    def produto_inserir(descricao, preco, estoque, idCategoria):
+    def produto_inserir(id, descricao, preco, estoque, idCategoria):
         id = 0
-        ProdutoDAO.inserir(Produto(id, descricao, preco, estoque, idCategoria))
+        c = Produto(id, descricao, preco, estoque, idCategoria)
+        ProdutoDAO.inserir(c)
     def produto_listar():
         return ProdutoDAO.listar()
 
@@ -72,12 +73,12 @@ class View:
     def produto_excluir(id, descricao, preco, estoque, idCategoria):
         c = Produto(id, descricao, preco, estoque, idCategoria)
         ProdutoDAO.excluir(c)
-    def listar_produtos(nome):
+
+    def listar_produtos(descricao):
         for obj in ProdutoDAO.listar():
-            if obj.get_nome() == nome:
-                if obj.get_estoque() == None:
-                    return obj
-            return None
+            if obj.get_descricao() == descricao:
+                return obj
+        return f"Produto não encontrado!"
     
     def inserir_produto():
         pass

@@ -5,7 +5,6 @@ class Venda:
     def __init__(self, idCompra, idCliente):
         self.idCompra = idCompra
         self.data = datetime.now() # data e horas atuais; chamar quando a compra for finalizada, ou seja, quando total for 0
-        self.carrinho = True # false quando total for 0
         self.total = 0.0 # preciso do id do produto pra pegar o preço
         self.idCliente = idCliente
     
@@ -18,6 +17,7 @@ class Venda:
     @staticmethod
     def from_json(dic):
         return Venda(dic["idCompra"], dic["data"], dic["idCliente"], dic["Total"])
+
     
    
 

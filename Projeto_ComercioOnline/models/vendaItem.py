@@ -26,7 +26,7 @@ class VendaItem:
         return VendaItem(dic["idVendaItem"], dic["quantidade"], dic["preco"], dic["idVenda"], dic["idVenda"], dic["idProduto"]) 
     def __str__(self):
         return f"{self.__idVendaItem}"
-    
+
 class VendaItemDAO:
     venda_item = []
 
