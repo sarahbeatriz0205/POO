@@ -27,11 +27,11 @@ class Produto:
     def get_descricao(self):
         return self.__descricao
     def get_preco(self):
-        return self.__descricao
-    def get_descricao(self):
-        return self.__descricao
-    def get_descricao(self):
-        return self.__descricao
+        return self.__preco
+    def get_estoque(self):
+        return self.__estoque
+    def get_idCategoria(self):
+        return self.__idCategoria
     
     def to_json(self):
         return {"id" : self.__idProduto, "descricao" : self.__descricao, "preco" : self.__preco, "estoque" : self.__estoque, "idCategoria" : self.__idCategoria} # me permite que eu ponha o nome que eu quiser para as chaves

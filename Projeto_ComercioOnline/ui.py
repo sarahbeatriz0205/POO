@@ -158,10 +158,13 @@ class UI:
         UI.produto_listar()
         percentual = float(input("Informe o percentual de ajuste: "))
         View.produto_reajuste(percentual)
+
     def listar_produtos():
         descricao = input("Qual produto você deseja buscar? ")
         resultado = View.listar_produtos(descricao)
         print(resultado)
+    def inserir_produto():
+        View.inserir_produto()
 
 
 UI.main()

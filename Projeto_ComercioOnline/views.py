@@ -3,6 +3,7 @@ from models.categoria import Categoria, CategoriaDAO
 from models.produto import Produto, ProdutoDAO 
 from models.vendaItem import VendaItem, VendaItemDAO
 from models.venda import Venda, VendaDAO
+from models.carrinho import Carrinho, CarrinhoDAO
 
 class View:
     @staticmethod
@@ -79,11 +80,20 @@ class View:
             if obj.get_descricao() == descricao:
                 return obj
         return f"Produto não encontrado!"
-    
-    def inserir_produto():
-        pass
-    def estado_carrinho():
-        pass
+    def inserir_produto(obj):
+        produto = ProdutoDAO.listar_id(obj.get_idProduto())
+        if produto != None:
+                CarrinhoDAO.inserir(obj)
+        return None
+    def visualizar_carrinho(objCarrinho):
+        carrinho = []
+        total = 0
+        for obj in CarrinhoDAO.listar():
+            produto = ProdutoDAO.listar_id(obj.get_idProduto())
+            total += obj.get_preco() * obj.get_qtd()
+            carrinho.append(produto.get_descricao() + " - "  + str(produto.get_preco()) + " - " + str(obj.get_qtd()) + " - " + str(obj.get_preco() * obj.get_qtd()))
+        carrinho.append("Total: ", total)
+        return carrinho
     def finalizar_compra():
         pass
     def listar_compras():
