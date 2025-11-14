@@ -85,17 +85,20 @@ class View:
         if produto != None:
                 CarrinhoDAO.inserir(obj)
         return None
-    def visualizar_carrinho(objCarrinho):
+    def visualizar_carrinho(objCarrinho, idCliente):
         carrinho = []
         total = 0
-        for obj in CarrinhoDAO.listar():
+        for obj in CarrinhoDAO.listar(idCliente):
             produto = ProdutoDAO.listar_id(obj.get_idProduto())
             total += obj.get_preco() * obj.get_qtd()
             carrinho.append(produto.get_descricao() + " - "  + str(produto.get_preco()) + " - " + str(obj.get_qtd()) + " - " + str(obj.get_preco() * obj.get_qtd()))
-        carrinho.append("Total: ", total)
+        carrinho.append("Total: ")
         return carrinho
-    def finalizar_compra():
-        pass
+    def finalizar_compra(idCliente):
+        v = Venda(0, idCliente)
+        idVenda = VendaDAO.inserir(v)
+
+
     def listar_compras():
         pass
     def mostrar_comprovante():

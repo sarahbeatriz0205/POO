@@ -35,6 +35,7 @@ class VendaDAO:
         obj.idCompra = obj.idCompra + 1
         cls.vendas.append(obj)
         cls.salvar_json()
+        return obj.idCompra
     @classmethod
     def listar(cls):
         cls.abrir_json() # não pode ser "return cls.abrir_json" porque esse método não retorna nada
