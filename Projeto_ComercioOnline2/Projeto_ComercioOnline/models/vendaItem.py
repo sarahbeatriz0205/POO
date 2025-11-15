@@ -9,7 +9,7 @@ class VendaItem:
     
     def set_idVenda(self, idVendaItem):
         self.__idVendaItem = idVendaItem
-    def set_idVenda(self, qtd):
+    def set_quantidade(self, qtd):
         self.__quantidade = qtd
     def set_preco(self, preco):
         self.__preco = preco

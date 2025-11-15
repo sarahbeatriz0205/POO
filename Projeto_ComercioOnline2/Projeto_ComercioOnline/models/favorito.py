@@ -16,7 +16,7 @@ class Favorito:
         return self.__idCliente
     
     def __str__(self):
-        return f"{self.__id} - {self.__idCliente}"
+        return f"{self.__idProduto} - {self.__idCliente}"
     
     def to_json(self):
         return {"idProduto" : self.__idProduto, "idCliente" : self.__idCliente}

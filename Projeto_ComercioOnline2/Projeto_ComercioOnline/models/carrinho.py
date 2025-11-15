@@ -6,6 +6,14 @@ class Carrinho:
         self.set_qtd(qtd)
         self.set_idCliente(idCliente)
     
+    def set_idProduto(self, idProduto):
+        self.__idProduto = idProduto
+    def set_qtd(self, qtd):
+        self.__qtd = qtd
+    def set_idCliente(self, idCliente):
+        self.__idCliente = idCliente
+    
+    
     def get_idProduto(self):
         return self.__idProduto
     def get_qtd(self):
@@ -17,9 +25,9 @@ class Carrinho:
         return f"{self.__id} - {self.__qtd}"
     
     def to_json(self):
-        return {"idProduto" : self.__idProduto, "qtd" : self.__qtd}
+        return {"idProduto" : self.__idProduto, "qtd" : self.__qtd, "idCliente" : self.__idCliente}
     def from_json(dic):
-        return Carrinho(dic["idProduto"], dic["qtd"]) 
+        return Carrinho(dic["idProduto"], dic["qtd"], dic["idCliente"]) 
 
 class CarrinhoDAO:
     objetos = []             

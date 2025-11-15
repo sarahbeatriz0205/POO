@@ -6,6 +6,7 @@ class Carrinho:
         self.set_qtd(qtd)
         self.set_idCliente(idCliente)
     
+    
     def get_idProduto(self):
         return self.__idProduto
     def get_qtd(self):

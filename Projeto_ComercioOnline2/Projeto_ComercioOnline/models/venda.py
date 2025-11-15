@@ -2,19 +2,27 @@ from datetime import datetime
 import json
 
 class Venda:
-    def __init__(self, idCompra, idCliente):
+    def __init__(self, idCompra, idCliente, total):
         self.set_idCompra(idCompra)
-        self.data(datetime.now()) # data e horas atuais; chamar quando a compra for finalizada, ou seja, quando total for 0
-        self.total(0.0) # preciso do id do produto pra pegar o preço
+        self.set_data(datetime.now()) # data e horas atuais; chamar quando a compra for finalizada, ou seja, quando total for 0
+        self.set_total(total) # preciso do id do produto pra pegar o preço
         self.set_idCliente(idCliente)
     
     def set_idCompra(self, idCompra):
         self.__idCompra = idCompra
+    def set_data(self, data):
+        self.__data = data
+    def set_total(self, total):
+        self.__total = total
     def set_idCliente(self, idCliente):
         self.__idCliente = idCliente
     
     def get_idCompra(self):
         return self.__idCompra
+    def get_data(self):
+        return self.__data
+    def get_total(self):
+        return self.__total
     def get_idCliente(self):
         return self.__idCliente
     
@@ -40,12 +48,12 @@ class VendaDAO:
         cls.abrir_json()
         idCompra = 0
         for objetoVenda in cls.vendas:
-            if objetoVenda.idCompra > idCompra: 
-                idCompra = objetoVenda.idCompra
-        obj.idCompra = obj.idCompra + 1
+            if objetoVenda.get_idCompra() > idCompra: 
+                idCompra = objetoVenda.get_idCompra()
+        obj.set_idCompra(obj.idCompra + 1)
         cls.vendas.append(obj)
         cls.salvar_json()
-        return obj.idCompra
+        return obj.get_idCompra()
     @classmethod
     def listar(cls):
         cls.abrir_json() # não pode ser "return cls.abrir_json" porque esse método não retorna nada
@@ -54,12 +62,12 @@ class VendaDAO:
         cls.abrir_json() # não pode ser "return cls.abrir_json" porque esse método não retorna nada
         vendas = []
         for objetoVenda in cls.vendas:
-            if objetoVenda.idCompra == idCliente: vendas.append(objetoVenda)
+            if objetoVenda.get_idCompra() == idCliente: vendas.append(objetoVenda)
         return vendas
     @classmethod
     def listar_id(cls, idCompra, idCliente):
         for obj in cls.vendas:
-            if obj.idCompra == idCompra and obj.idCompra == idCliente:
+            if obj.get_idCompra() == idCompra and obj.get_idCliente() == idCliente:
                 return obj
         return None
     @classmethod

@@ -105,11 +105,9 @@ class View:
             total = c.get_qtd() * produto.get_preco()
             vi = VendaItem(0, c.get_qtd(), c.get_qtd() * produto.get_preco(), idVenda, c.get_idProduto())
             VendaItemDAO.inserir(vi)
-
         v = VendaDAO.listar_id(idVenda, idCliente)
-        v.total = total
+        v.set_total(total)
         VendaDAO.atualizar(v)
-
         for carrinho in CarrinhoDAO.listar(idCliente): CarrinhoDAO.excluir(carrinho)
 
     def listar_compras(idCliente):
@@ -117,12 +115,12 @@ class View:
         conteudo = []
         total = 0
         for venda in vendas:
-            total += venda.total
-            vis : list[VendaItem] = VendaItemDAO.listar_id(venda.idCompra)
+            total += venda.get_total()
+            vis : list[VendaItem] = VendaItemDAO.listar_id(venda.get_idCompra())
             for vi in vis:
                 produto : Produto = ProdutoDAO.listar_id(vi.get_idProduto())
                 conteudo.append(produto.get_descricao() + " - Unitario: "  + str(produto.get_preco()) + " - " + str(vi.get_quantidade()) + " - " + str(vi.get_preco()))
-            conteudo.append("Total Venda " + str(venda.idCompra) + ":" + str(venda.total)) 
+            conteudo.append("Total Venda " + str(venda.get_idCompra()) + ":" + str(venda.get_total())) 
         conteudo.append("Total todas vendas: " + str(total))    
         return conteudo
     
@@ -130,13 +128,13 @@ class View:
         vendas : list[Venda] = VendaDAO.listar()
         conteudo = []
         for venda in vendas:
-            cliente : Cliente = ClienteDAO.listar_id(venda.idCliente)
+            cliente : Cliente = ClienteDAO.listar_id(venda.get_idCliente())
             conteudo.append("Cliente: " + cliente.get_nome())
-            vis : list[VendaItem] = VendaItemDAO.listar_id(venda.idCompra)
+            vis : list[VendaItem] = VendaItemDAO.listar_id(venda.get_idCompra())
             for vi in vis:
                 produto : Produto = ProdutoDAO.listar_id(vi.get_idProduto())
                 conteudo.append(produto.get_descricao() + " - Unitario: "  + str(produto.get_preco()) + " - " + str(vi.get_quantidade()) + " - " + str(vi.get_preco()))
-            conteudo.append("Total Venda " + str(venda.idCompra) + ":" + str(venda.total))   
+            conteudo.append("Total Venda " + str(venda.get_idCompra()) + ":" + str(venda.get_total()))   
         return conteudo
     
     def listar_compras_admin_agrupado():
@@ -146,14 +144,14 @@ class View:
             cliente : Cliente = ClienteDAO.listar_id(c.get_idCliente())
             vendas : list[Venda] = VendaDAO.listar_meus(cliente.get_idCliente())
             total = 0
-            conteudo.append(cliente.get_nome)
+            conteudo.append(cliente.get_nome())
             for venda in vendas:
-                total += venda.total
-                vis : list[VendaItem] = VendaItemDAO.listar_id(venda.idCompra)
+                total += venda.get_total()
+                vis : list[VendaItem] = VendaItemDAO.listar_id(venda.get_idCompra())
                 for vi in vis:
                     produto : Produto = ProdutoDAO.listar_id(vi.get_idProduto())
                     conteudo.append(produto.get_descricao() + " - Unitario: "  + str(produto.get_preco()) + " - " + str(vi.get_quantidade()) + " - " + str(vi.get_preco()))
-                conteudo.append("Total Venda " + str(venda.idCompra) + ":" + str(venda.total)) 
+                conteudo.append("Total Venda " + str(venda.get_idCompra()) + ":" + str(venda.get_total())) 
             conteudo.append("Total todas vendas do cliente " + cliente.get_nome() + ": " + str(total) )    
         return conteudo
     
