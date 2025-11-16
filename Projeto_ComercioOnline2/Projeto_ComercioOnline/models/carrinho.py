@@ -42,6 +42,7 @@ class CarrinhoDAO:
             cls.atualizar(aux)
     @classmethod
     def listar(cls, idCliente):
+        cls.abrir()
         carrinho = []
         for objeto in cls.objetos:
             if objeto.get_idCliente() == idCliente: 
@@ -66,6 +67,18 @@ class CarrinhoDAO:
         if aux != None:
             cls.objetos.remove(aux)
             cls.salvar()
+    @classmethod
+    def excluir_lote_idCliente(cls, idCliente):
+        cls.abrir()
+        for objeto in cls.objetos:
+            if objeto.get_idCliente() == idCliente:
+                cls.excluir(objeto)
+    @classmethod
+    def excluir_lote_idProduto(cls, idProduto):
+        cls.abrir()
+        for objeto in cls.objetos:
+            if objeto.get_idProduto == idProduto:
+                cls.excluir(objeto)
     @classmethod
     def salvar(cls):
         with open("carrinho.json", mode="w") as arquivo:

@@ -84,6 +84,12 @@ class VendaDAO:
             cls.vendas.remove(aux)
         cls.salvar_json()
     @classmethod
+    def excluir_lote_idCliente(cls, idCliente):
+        cls.abrir()
+        for objeto in cls.objetos:
+            if objeto.get_idCliente() == idCliente:
+                cls.excluir(objeto)
+    @classmethod
     def salvar_json(cls):
         with open("vendas.json", mode="w") as arquivo:
             json.dump(cls.vendas, arquivo, default = Venda.to_json, indent=4)

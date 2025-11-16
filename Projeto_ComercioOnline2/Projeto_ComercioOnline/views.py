@@ -4,6 +4,7 @@ from models.produto import Produto, ProdutoDAO
 from models.vendaItem import VendaItem, VendaItemDAO
 from models.venda import Venda, VendaDAO
 from models.carrinho import Carrinho, CarrinhoDAO
+from models.favorito import Favorito, FavoritoDAO
 
 class View:
     @staticmethod
@@ -34,6 +35,9 @@ class View:
     def cliente_excluir(id, nome, email, telefone, senha):
         c = Cliente(id, nome, email, telefone, senha)
         ClienteDAO.excluir(c)
+        CarrinhoDAO.excluir_lote_idCliente(id)
+        VendaItemDAO.excluir_lote_idCliente(id)
+        FavoritoDAO.excluir_lote_idCliente(id)
 
     def categoria_inserir(descricao):
         id = 0
@@ -74,6 +78,10 @@ class View:
     def produto_excluir(id, descricao, preco, estoque, idCategoria):
         c = Produto(id, descricao, preco, estoque, idCategoria)
         ProdutoDAO.excluir(c)
+        VendaItem.excluir_lote_idProduto(id)
+        CarrinhoDAO.excluir_lote_idProduto(id)
+        FavoritoDAO.excluir_lote_idProduto(id)
+
 
     def listar_produtos(descricao):
         for obj in ProdutoDAO.listar():
@@ -156,11 +164,19 @@ class View:
         return conteudo
     
     def favoritar(obj):
-        pass
+        f = ProdutoDAO.listar_id(obj.get_idProduto())
+        if f != None:
+            FavoritoDAO.favoritar(obj)
 
     def desfavoritar(obj):
-        pass
+        f = ProdutoDAO.listar_id(obj.get_idProduto())
+        if f != None:
+            FavoritoDAO.desfavoritar(obj)
 
     def produtos_favoritos(idCliente):
-        pass
-            
+        fav = []
+        favoritos = FavoritoDAO.favoritos(idCliente)
+        for f in favoritos:
+            produto = ProdutoDAO.listar_id(f.get_idProduto())
+            fav.append("Produto: " + produto.get_descricao() + "\nPreço: " + str(produto.get_preco()))
+        return fav

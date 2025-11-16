@@ -74,6 +74,18 @@ class VendaItemDAO:
             cls.venda_item.remove(aux)
             cls.salvar_json()
     @classmethod
+    def excluir_lote_idVenda(cls, idVenda):
+        cls.abrir()
+        for objeto in cls.venda_item:
+            if objeto.get_idVenda() == idVenda:
+                cls.excluir(objeto)
+    @classmethod
+    def excluir_lote_idProduto(cls, idProduto):
+        cls.abrir()
+        for objeto in cls.venda_item:
+            if objeto.get_idProduto == idProduto:
+                cls.excluir(objeto)
+    @classmethod
     def salvar_json(cls):
         with open("venda_itens.json", mode="w") as arquivo:
             json.dump(cls.venda_item, arquivo, default = VendaItem.to_json, indent = 4)
