@@ -6,6 +6,17 @@ class VendaItem:
         self.set_preco(preco) # da compra atual
         self.set_idVenda(idVenda)
         self.set_idProduto(idProduto)
+    
+    def set_idVendaItem(self, idVendaItem):
+        self.__idVendaItem = idVendaItem
+    def set_quantidade(self, qtd):
+        self.__quantidade = qtd
+    def set_preco(self, preco):
+        self.__preco = preco
+    def set_idVenda(self, idVenda):
+        self.__idVenda = idVenda
+    def set_idProduto(self, idProduto):
+        self.__idProduto = idProduto
 
     def get_idVendaItem(self):
         return self.__idVendaItem
@@ -62,6 +73,24 @@ class VendaItemDAO:
         if aux != None:
             cls.venda_item.remove(aux)
             cls.salvar_json()
+    @classmethod
+    def excluir_lote_idVenda(cls, idVenda):
+        cls.abrir_json()
+        for objeto in cls.venda_item:
+            if objeto.get_idVenda() == idVenda:
+                cls.excluir(objeto)
+    @classmethod
+    def excluir_lote_idProduto(cls, idProduto):
+        cls.abrir_json()
+        for objeto in cls.venda_item:
+            if objeto.get_idProduto == idProduto:
+                cls.excluir(objeto)
+    @classmethod
+    def excluir_lote_idCliente(cls, idCliente):
+        cls.abrir_json()
+        for objeto in cls.venda_item:
+            if objeto.get_idCliente() == idCliente:
+                cls.excluir(objeto)
     @classmethod
     def salvar_json(cls):
         with open("venda_itens.json", mode="w") as arquivo:

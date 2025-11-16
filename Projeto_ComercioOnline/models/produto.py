@@ -50,10 +50,10 @@ class ProdutoDAO:
     def inserir(cls, objetoProduto):
         cls.abrir_json()
         idProduto = 0
-        for objetoProduto in cls.produtos:
-            if objetoProduto.get_idProduto() > idProduto: 
-                idProduto = objetoProduto.get_idProduto()
-        objetoProduto.set_idProduto(objetoProduto.get_idProduto() + 1)
+        for obj in cls.produtos:
+            if obj.get_idProduto() > idProduto: 
+                idProduto = obj.get_idProduto()
+        objetoProduto.set_idProduto(idProduto + 1)
         cls.produtos.append(objetoProduto)
         cls.salvar_json()
     @classmethod
@@ -62,6 +62,7 @@ class ProdutoDAO:
         return cls.produtos
     @classmethod
     def listar_id(cls, idProduto):
+        cls.abrir_json()
         for obj in cls.produtos:
             if obj.get_idProduto() == idProduto:
                 return obj
@@ -79,6 +80,12 @@ class ProdutoDAO:
         if aux != None:
             cls.produtos.remove(aux)
         cls.salvar_json()
+    @classmethod
+    def excluir_lote_idProduto(cls, idProduto):
+        cls.abrir()
+        for objeto in cls.venda_item:
+            if objeto.get_idProduto == idProduto:
+                cls.excluir(objeto)
     @classmethod
     def salvar_json(cls):
         with open("produtos.json", mode="w") as arquivo:

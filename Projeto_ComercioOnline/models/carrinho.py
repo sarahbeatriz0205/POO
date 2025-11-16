@@ -6,6 +6,13 @@ class Carrinho:
         self.set_qtd(qtd)
         self.set_idCliente(idCliente)
     
+    def set_idProduto(self, idProduto):
+        self.__idProduto = idProduto
+    def set_qtd(self, qtd):
+        self.__qtd = qtd
+    def set_idCliente(self, idCliente):
+        self.__idCliente = idCliente
+    
     
     def get_idProduto(self):
         return self.__idProduto
@@ -15,18 +22,19 @@ class Carrinho:
         return self.__idCliente
     
     def __str__(self):
-        return f"{self.__id} - {self.__qtd}"
+        return f"{self.__idProduto} - {self.__idCliente} - {self.__qtd}"
     
     def to_json(self):
-        return {"idProduto" : self.__idProduto, "qtd" : self.__qtd}
+        return {"idProduto" : self.__idProduto, "qtd" : self.__qtd, "idCliente" : self.__idCliente}
+    @staticmethod
     def from_json(dic):
-        return Carrinho(dic["idProduto"], dic["qtd"]) 
+        return Carrinho(dic["idProduto"], dic["qtd"], dic["idCliente"]) 
 
 class CarrinhoDAO:
     objetos = []             
     @classmethod              
     def inserir(cls, obj):
-        aux = cls.listar_id(obj.get_idProduto())
+        aux = cls.listar_id(obj.get_idProduto(), obj.get_idCliente())
         if aux == None:
             cls.objetos.append(obj)
             cls.salvar()
@@ -35,11 +43,12 @@ class CarrinhoDAO:
             cls.atualizar(aux)
     @classmethod
     def listar(cls, idCliente):
+        cls.abrir()
         carrinho = []
         for objeto in cls.objetos:
             if objeto.get_idCliente() == idCliente: 
                 carrinho.append(objeto)
-            return carrinho
+        return carrinho
     @classmethod
     def listar_id(cls, id, idCliente):
         cls.abrir()
@@ -59,6 +68,18 @@ class CarrinhoDAO:
         if aux != None:
             cls.objetos.remove(aux)
             cls.salvar()
+    @classmethod
+    def excluir_lote_idCliente(cls, idCliente):
+        cls.abrir()
+        for objeto in cls.objetos:
+            if objeto.get_idCliente() == idCliente:
+                cls.excluir(objeto)
+    @classmethod
+    def excluir_lote_idProduto(cls, idProduto):
+        cls.abrir()
+        for objeto in cls.objetos:
+            if objeto.get_idProduto == idProduto:
+                cls.excluir(objeto)
     @classmethod
     def salvar(cls):
         with open("carrinho.json", mode="w") as arquivo:

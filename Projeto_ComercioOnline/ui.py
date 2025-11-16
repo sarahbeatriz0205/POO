@@ -1,4 +1,6 @@
 from views import View
+from models.carrinho import Carrinho
+from models.favorito import Favorito
 
 class UI:  
     __usuario = None
@@ -21,11 +23,14 @@ class UI:
         print("5-Inserir, 6-Listar, 7-Atualizar, 8-Excluir")
         print()
         print("Produtos")
-        print("9-Inserir, 10-Listar, 11-Atualizar, 12-Excluir")
+        print("9-Inserir, 10-Listar, 11-Atualizar, 12-Excluir, 13-Reajustar preço")
         print()
-        print("13 - Fim")
+        print("Compras")
+        print("14-Listar todas as vendas")
+        print()
+        print("15 - Fim")
         op = 0
-        while op != 13:
+        while op != 15:
             op = int(input("Informe uma opção: "))
         
             if op == 1: UI.cliente_inserir()
@@ -40,7 +45,9 @@ class UI:
             if op == 10: UI.produto_listar()
             if op == 11: UI.produto_atualizar()
             if op == 12: UI.produto_excluir()
-            if op == 13: UI.usuario_sair()
+            if op == 13: UI.produto_reajuste()
+            if op == 14: UI.listar_compras_admin()
+            if op == 15: UI.usuario_sair()
       
     def menu_cliente():
         print("\n")
@@ -49,6 +56,9 @@ class UI:
         print("3-Visualizar carrinho")
         print("4-Comprar carrinho")
         print("5-Listar minhas compras")
+        print("6-Favoritar produtos")
+        print("7-Desfavoritar produtos")
+        print("8-Listar meus produtos favoritos")
         print("9-Sair")
         op = 0
         while op != 9:
@@ -56,9 +66,12 @@ class UI:
                  
             if op == 1: UI.listar_produtos()
             if op == 2: UI.inserir_produto()
-            if op == 3: UI.estado_carrinho()
+            if op == 3: UI.visualizar_carrinho()
             if op == 4: UI.finalizar_compra()
             if op == 5: UI.listar_compras()
+            if op == 6: UI.favoritar()
+            if op == 7: UI.desfavoritar()
+            if op == 8: UI.produtos_favoritos()
             if op == 9: UI.usuario_sair() 
         return op       
     def main():
@@ -159,12 +172,45 @@ class UI:
         percentual = float(input("Informe o percentual de ajuste: "))
         View.produto_reajuste(percentual)
 
+    def listar_compras_admin():
+        print(View.listar_compras_admin())
+
     def listar_produtos():
         descricao = input("Qual produto você deseja buscar? ")
         resultado = View.listar_produtos(descricao)
         print(resultado)
     def inserir_produto():
-        View.inserir_produto()
+        UI.produto_listar()
+        idProduto = int(input("Informe o produto desejado: "))
+        qtd = int(input("Quantos você deseja? "))
+        idCliente = View.get_cliente_id(UI.__usuario["email"], UI.__usuario["senha"])
+        c = Carrinho(idProduto, qtd, idCliente)
+        View.inserir_produto(c)
+    
+    def visualizar_carrinho():
+        idCliente = View.get_cliente_id(UI.__usuario["email"], UI.__usuario["senha"])
+        print(View.visualizar_carrinho(idCliente))
+
+    def listar_compras():
+        print(View.listar_compras(View.get_cliente_id(UI.__usuario["email"], UI.__usuario["senha"])))
+    
+    def finalizar_compra():
+        idCliente = View.get_cliente_id(UI.__usuario["email"], UI.__usuario["senha"])
+        View.finalizar_compra(idCliente)
+    
+    # por algum motivo, não tá salvando
+    def favoritar():
+        UI.produto_listar()
+        idProduto = int(input("Qual produto deseja favoritar? "))
+        idCliente = View.get_cliente_id(UI.__usuario["email"], UI.__usuario["senha"])
+        produto = Favorito(idProduto, idCliente)
+        View.favoritar(produto)
+    def desfavoritar():
+        UI.produto_listar()
+        idProduto = int(input("Qual produto deseja desfavoritar? "))
+        idCliente = View.get_cliente_id(UI.__usuario["email"], UI.__usuario["senha"])
+        produto = Favorito(idProduto, idCliente)
+        View.desfavoritar(produto)
 
 
 UI.main()

@@ -70,7 +70,7 @@ class ClienteDAO:
     @classmethod
     def excluir(cls, obj):
         # procurar o objeto que tem o idCliente dado por obj.idCliente
-        aux = cls.listar_id(obj.get_idCliente)
+        aux = cls.listar_id(obj.get_idCliente())
         if aux != None:
             cls.clientes.remove(aux)
             cls.salvar()
