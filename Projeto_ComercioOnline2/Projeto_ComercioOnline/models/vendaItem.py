@@ -75,15 +75,21 @@ class VendaItemDAO:
             cls.salvar_json()
     @classmethod
     def excluir_lote_idVenda(cls, idVenda):
-        cls.abrir()
+        cls.abrir_json()
         for objeto in cls.venda_item:
             if objeto.get_idVenda() == idVenda:
                 cls.excluir(objeto)
     @classmethod
     def excluir_lote_idProduto(cls, idProduto):
-        cls.abrir()
+        cls.abrir_json()
         for objeto in cls.venda_item:
             if objeto.get_idProduto == idProduto:
+                cls.excluir(objeto)
+    @classmethod
+    def excluir_lote_idCliente(cls, idCliente):
+        cls.abrir_json()
+        for objeto in cls.venda_item:
+            if objeto.get_idCliente() == idCliente:
                 cls.excluir(objeto)
     @classmethod
     def salvar_json(cls):

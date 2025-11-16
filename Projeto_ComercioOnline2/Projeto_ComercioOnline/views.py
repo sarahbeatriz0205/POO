@@ -18,8 +18,14 @@ class View:
     @staticmethod
     def cliente_autenticar(email, senha):
         for obj in View.cliente_listar():
-            if obj.get_email() == email: 
+            if obj.get_email() == email and obj.get_senha() == senha: 
                 return { "email": obj.get_email(), "senha" : obj.get_senha()}
+        return None
+    @staticmethod
+    def get_cliente_id(email, senha):
+        for obj in View.cliente_listar():
+            if obj.get_email() == email and obj.get_senha() == senha: 
+                return obj.get_idCliente()
         return None
     def cliente_inserir(nome, email, telefone, senha):
         id = 0
@@ -78,7 +84,7 @@ class View:
     def produto_excluir(id, descricao, preco, estoque, idCategoria):
         c = Produto(id, descricao, preco, estoque, idCategoria)
         ProdutoDAO.excluir(c)
-        VendaItem.excluir_lote_idProduto(id)
+        VendaItemDAO.excluir_lote_idProduto(id)
         CarrinhoDAO.excluir_lote_idProduto(id)
         FavoritoDAO.excluir_lote_idProduto(id)
 

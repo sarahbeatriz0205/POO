@@ -85,8 +85,8 @@ class VendaDAO:
         cls.salvar_json()
     @classmethod
     def excluir_lote_idCliente(cls, idCliente):
-        cls.abrir()
-        for objeto in cls.objetos:
+        cls.abrir_json()
+        for objeto in cls.vendas:
             if objeto.get_idCliente() == idCliente:
                 cls.excluir(objeto)
     @classmethod

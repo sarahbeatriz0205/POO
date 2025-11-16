@@ -1,4 +1,5 @@
 from views import View
+from models.carrinho import Carrinho
 
 class UI:  
     __usuario = None
@@ -164,7 +165,16 @@ class UI:
         resultado = View.listar_produtos(descricao)
         print(resultado)
     def inserir_produto():
-        View.inserir_produto()
+        UI.produto_listar()
+        idProduto = int(input("Informe o produto desejado: "))
+        qtd = int(input("Quantos você deseja? "))
+        View.inserir_produto(Carrinho(idProduto, qtd, View.get_cliente_id(UI.__usuario["email"], UI.__usuario["senha"])))
+    
+    def visualizar_carrinho():
+        pass
+
+    def listar_compras():
+        View.listar_compras(View.get_cliente_id(UI.__usuario["email"], UI.__usuario["senha"]))
 
 
 UI.main()
