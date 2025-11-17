@@ -78,7 +78,7 @@ class CarrinhoDAO:
     def excluir_lote_idProduto(cls, idProduto):
         cls.abrir()
         for objeto in cls.objetos:
-            if objeto.get_idProduto == idProduto:
+            if objeto.get_idProduto() == idProduto:
                 cls.excluir(objeto)
     @classmethod
     def salvar(cls):

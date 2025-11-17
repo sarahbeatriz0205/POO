@@ -2,9 +2,9 @@ from datetime import datetime
 import json
 
 class Venda:
-    def __init__(self, idCompra, idCliente, total):
+    def __init__(self, idCompra, idCliente, total, data = datetime.now()):
         self.set_idCompra(idCompra)
-        self.set_data(datetime.now()) # data e horas atuais; chamar quando a compra for finalizada, ou seja, quando total for 0
+        self.set_data(data) # data e horas atuais; chamar quando a compra for finalizada, ou seja, quando total for 0
         self.set_total(total) # preciso do id do produto pra pegar o preço
         self.set_idCliente(idCliente)
     
@@ -34,10 +34,7 @@ class Venda:
     
     @staticmethod
     def from_json(dic):
-        return Venda(dic["idCompra"], dic["data"], dic["idCliente"], dic["Total"])
-
-    
-   
+        return Venda(dic["idCompra"], dic["idCliente"], dic["Total"], dic["data"])
 
 class VendaDAO:
     # atributo de VendaDAO:
@@ -63,17 +60,23 @@ class VendaDAO:
         cls.abrir_json() # não pode ser "return cls.abrir_json" porque esse método não retorna nada
         vendas = []
         for objetoVenda in cls.vendas:
-            if objetoVenda.get_idCompra() == idCliente: vendas.append(objetoVenda)
+            if objetoVenda.get_idCliente() == idCliente: vendas.append(objetoVenda)
         return vendas
     @classmethod
-    def listar_id(cls, idCompra, idCliente):
+    def listar_idCliente(cls, idCompra, idCliente):
         for obj in cls.vendas:
             if obj.get_idCompra() == idCompra and obj.get_idCliente() == idCliente:
                 return obj
         return None
     @classmethod
+    def listar_id(cls, idCompra):
+        for obj in cls.vendas:
+            if obj.get_idCompra() == idCompra:
+                return obj
+        return None
+    @classmethod
     def atualizar(cls, obj):
-        aux = cls.listar_id(obj.get_idCompra(), obj.get_idCliente)
+        aux = cls.listar_idCliente(obj.get_idCompra(), obj.get_idCliente())
         if aux != None:
             cls.vendas.remove(aux)
             cls.vendas.append(obj)

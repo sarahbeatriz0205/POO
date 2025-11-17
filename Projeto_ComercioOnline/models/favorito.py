@@ -66,9 +66,15 @@ class FavoritoDAO:
             if objeto.get_idProduto() == idProduto:
                 cls.excluir(objeto)
     @classmethod
-    def salvar(cls, obj):
+    def excluir(cls, obj):
+        aux = cls.favoritos_produto(obj.get_idProduto(), obj.get_idCliente())
+        if aux != None:
+            cls.objetos.remove(aux)
+            cls.salvar()
+    @classmethod
+    def salvar(cls):
         with open("favorito.json", mode="w") as arquivo:
-                json.dump(cls.objetos, arquivo, default=Favorito.to_json(obj), indent=4)
+                json.dump(cls.objetos, arquivo, default=Favorito.to_json, indent=4)
     @classmethod
     def abrir(cls):
         cls.objetos = []

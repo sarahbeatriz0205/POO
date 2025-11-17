@@ -40,10 +40,13 @@ class View:
         ClienteDAO.atualizar(c)
     def cliente_excluir(id, nome, email, telefone, senha):
         c = Cliente(id, nome, email, telefone, senha)
-        ClienteDAO.excluir(c)
         CarrinhoDAO.excluir_lote_idCliente(id)
-        VendaItemDAO.excluir_lote_idCliente(id)
+        vendas : list[Venda] = VendaDAO.listar_meus(id)
+        for venda in vendas:
+            VendaItemDAO.excluir_lote_idVenda(venda.get_idCompra())
+        VendaDAO.excluir_lote_idCliente(id)
         FavoritoDAO.excluir_lote_idCliente(id)
+        ClienteDAO.excluir(c)
 
     def categoria_inserir(descricao):
         id = 0
@@ -110,7 +113,7 @@ class View:
         carrinho.append("Total: " + str(total))
         return carrinho
     
-    def finalizar_compra(idCliente):
+    def finalizar_compra_antigo(idCliente):
         v = Venda(0, idCliente, 0)
         idVenda = VendaDAO.inserir(v)
         total = 0
@@ -120,10 +123,27 @@ class View:
             total += c.get_qtd() * produto.get_preco()
             vi = VendaItem(0, c.get_qtd(), c.get_qtd() * produto.get_preco(), idVenda, c.get_idProduto())
             VendaItemDAO.inserir(vi)
-        v = VendaDAO.listar_id(idVenda, idCliente)
+        v = VendaDAO.listar_idCliente(idVenda, idCliente)
         v.set_total(total)
         VendaDAO.atualizar(v)
         for carrinho in CarrinhoDAO.listar(idCliente): CarrinhoDAO.excluir(carrinho)
+    
+    def finalizar_compra(idCliente):
+        itens = CarrinhoDAO.listar(idCliente)
+        if len(itens) > 0:
+            v = Venda(0, idCliente, 0)
+            idVenda = VendaDAO.inserir(v)
+            total = 0
+            for carrinho in itens:
+                c : Carrinho = carrinho
+                produto : Produto = ProdutoDAO.listar_id(c.get_idProduto())
+                total += c.get_qtd() * produto.get_preco()
+                vi = VendaItem(0, c.get_qtd(), c.get_qtd() * produto.get_preco(), idVenda, c.get_idProduto())
+                VendaItemDAO.inserir(vi)
+            v = VendaDAO.listar_idCliente(idVenda, idCliente)
+            v.set_total(total)
+            VendaDAO.atualizar(v)
+            for carrinho in CarrinhoDAO.listar(idCliente): CarrinhoDAO.excluir(carrinho)
 
     def listar_compras(idCliente):
         vendas : list[Venda] = VendaDAO.listar_meus(idCliente)
@@ -131,7 +151,7 @@ class View:
         total = 0
         for venda in vendas:
             total += venda.get_total()
-            vis : list[VendaItem] = VendaItemDAO.listar_id(venda.get_idCompra())
+            vis : list[VendaItem] = VendaItemDAO.listar_idVenda(venda.get_idCompra())
             for vi in vis:
                 produto : Produto = ProdutoDAO.listar_id(vi.get_idProduto())
                 conteudo.append(produto.get_descricao() + " - Unitario: "  + str(produto.get_preco()) + " - " + str(vi.get_quantidade()) + " - " + str(vi.get_preco()))
@@ -145,7 +165,7 @@ class View:
         for venda in vendas:
             cliente : Cliente = ClienteDAO.listar_id(venda.get_idCliente())
             conteudo.append("Cliente: " + cliente.get_nome())
-            vis : list[VendaItem] = VendaItemDAO.listar_id(venda.get_idCompra())
+            vis : list[VendaItem] = VendaItemDAO.listar_idVenda(venda.get_idCompra())
             for vi in vis:
                 produto : Produto = ProdutoDAO.listar_id(vi.get_idProduto())
                 conteudo.append(produto.get_descricao() + " - Unitario: "  + str(produto.get_preco()) + " - " + str(vi.get_quantidade()) + " - " + str(vi.get_preco()))
@@ -162,7 +182,7 @@ class View:
             conteudo.append(cliente.get_nome())
             for venda in vendas:
                 total += venda.get_total()
-                vis : list[VendaItem] = VendaItemDAO.listar_id(venda.get_idCompra())
+                vis : list[VendaItem] = VendaItemDAO.listar_idVenda(venda.get_idCompra())
                 for vi in vis:
                     produto : Produto = ProdutoDAO.listar_id(vi.get_idProduto())
                     conteudo.append(produto.get_descricao() + " - Unitario: "  + str(produto.get_preco()) + " - " + str(vi.get_quantidade()) + " - " + str(vi.get_preco()))
@@ -171,7 +191,7 @@ class View:
         return conteudo
     
     def favoritar(obj):
-        f = ProdutoDAO.listar_id(obj)
+        f = ProdutoDAO.listar_id(obj.get_idProduto())
         if f != None:
             FavoritoDAO.favoritar(obj)
 

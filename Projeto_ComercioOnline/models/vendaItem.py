@@ -34,7 +34,7 @@ class VendaItem:
         return {"idVendaItem" : self.__idVendaItem, "quantidade" : self.__quantidade, "preco" : self.__preco, "idVenda" : self.__idVenda, "idProduto" : self.__idProduto} # me permite que eu ponha o nome que eu quiser para as chaves
     @staticmethod
     def from_json(dic):
-        return VendaItem(dic["idVendaItem"], dic["quantidade"], dic["preco"], dic["idVenda"], dic["idVenda"], dic["idProduto"]) 
+        return VendaItem(dic["idVendaItem"], dic["quantidade"], dic["preco"],  dic["idVenda"], dic["idProduto"]) 
     def __str__(self):
         return f"{self.__idVendaItem}"
 
@@ -62,6 +62,14 @@ class VendaItemDAO:
                 return objetoVendaItem
             return None
     @classmethod
+    def listar_idVenda(cls, idVenda):
+        cls.abrir_json()
+        itens = []
+        for objetoVendaItem in cls.venda_item:
+            if objetoVendaItem.get_idVenda() == idVenda:
+                itens.append(objetoVendaItem)
+        return itens
+    @classmethod
     def atualizar(cls, objetoVendaItem):
         aux = cls.listar_id(objetoVendaItem.get_idVendaItem())
         if aux != None:
@@ -83,7 +91,7 @@ class VendaItemDAO:
     def excluir_lote_idProduto(cls, idProduto):
         cls.abrir_json()
         for objeto in cls.venda_item:
-            if objeto.get_idProduto == idProduto:
+            if objeto.get_idProduto() == idProduto:
                 cls.excluir(objeto)
     @classmethod
     def excluir_lote_idCliente(cls, idCliente):
@@ -103,6 +111,6 @@ class VendaItemDAO:
                 list_dic = json.load(arquivo)
                 for dic in list_dic:
                     c = VendaItem.from_json(dic)
-                    cls.clientes.append(c)
+                    cls.venda_item.append(c)
         except:
             pass

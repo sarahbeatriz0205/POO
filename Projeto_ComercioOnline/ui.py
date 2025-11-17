@@ -189,10 +189,12 @@ class UI:
     
     def visualizar_carrinho():
         idCliente = View.get_cliente_id(UI.__usuario["email"], UI.__usuario["senha"])
-        print(View.visualizar_carrinho(idCliente))
+        for conteudo in View.visualizar_carrinho(idCliente):
+            print(conteudo)
 
     def listar_compras():
-        print(View.listar_compras(View.get_cliente_id(UI.__usuario["email"], UI.__usuario["senha"])))
+        for conteudo in View.listar_compras(View.get_cliente_id(UI.__usuario["email"], UI.__usuario["senha"])):
+            print(conteudo)
     
     def finalizar_compra():
         idCliente = View.get_cliente_id(UI.__usuario["email"], UI.__usuario["senha"])
@@ -211,6 +213,9 @@ class UI:
         idCliente = View.get_cliente_id(UI.__usuario["email"], UI.__usuario["senha"])
         produto = Favorito(idProduto, idCliente)
         View.desfavoritar(produto)
+    def produtos_favoritos():
+        for conteudo in View.produtos_favoritos(View.get_cliente_id(UI.__usuario["email"], UI.__usuario["senha"])):
+            print(conteudo)
 
 
 UI.main()

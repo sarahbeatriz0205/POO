@@ -84,7 +84,7 @@ class ProdutoDAO:
     def excluir_lote_idProduto(cls, idProduto):
         cls.abrir()
         for objeto in cls.venda_item:
-            if objeto.get_idProduto == idProduto:
+            if objeto.get_idProduto() == idProduto:
                 cls.excluir(objeto)
     @classmethod
     def salvar_json(cls):
