@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-from time import time
 from views import View
 
 class ManterProdutoUI:
@@ -11,7 +10,7 @@ class ManterProdutoUI:
         with tab1: ManterProdutoUI.listar()
         with tab2: ManterProdutoUI.inserir()
         with tab3: ManterProdutoUI.atualizar()
-        #with tab4: ManterProdutoUI.excluir()
+        with tab4: ManterProdutoUI.excluir()
 
     def listar():
         produtos = View.produto_listar()
@@ -20,24 +19,24 @@ class ManterProdutoUI:
             list_dic = []
             for produto in produtos: list_dic.append(produto.to_json())
             df = pd.DataFrame(list_dic)
-            st.dataframe(df, hide_index=True, column_order=["id", "nome", "email", "fone"])     
+            st.dataframe(df, hide_index=True, column_order=["id", "descricao", "preco", "estoque", "idCategoria"])     
 
     def inserir():
+        id = 0
         descricao = st.text_input("Descrição do produto")
         preco = st.text_input("Preço")
         estoque = st.text_input("Estoque atual")
         idCategoria = st.text_input("Id da categoria a qual pertence")
-        if st.button("Inserir"):
-            View.produto_inserir(descricao, preco, estoque, idCategoria)
+        if st.button("Inserir"): 
+            View.produto_inserir(id, descricao, preco, estoque, idCategoria)
             st.success("Produto adicionado com sucesso!")
-            time.sleep(2)
             st.rerun()
 
     def atualizar():
         produtos = View.produto_listar()
         if len(produtos) == 0: st.write("Nenhum produto até o momento")
         else:
-            op = st.sidebar.selectbox("Produtos", produtos)
+            op = st.selectbox("Atualizar Produtos", produtos)
             descricao = st.text_input("Nova descrição",  op.get_descricao())
             preco = st.text_input("Novo preço", op.get_preco())
             estoque = st.text_input("Novo estoque", op.get_estoque())
@@ -46,11 +45,21 @@ class ManterProdutoUI:
                 id = op.get_idProduto()
                 View.produto_atualizar(id, descricao, preco, estoque, idCategoria)
                 st.success("Produto atualizado com sucesso!")
-                time.sleep(2)
                 st.rerun()
     
     def excluir():
         # selecionar um produto já existente e excluir
-        pass
-                
-        
+        produtos = View.produto_listar()
+        if len(produtos) == 0: st.write("Nenhum produto até o momento")
+        else:
+            op = st.selectbox("Excluir Produtos", produtos)
+            if op:
+                if st.button("Excluir"):
+                    id = op.get_idProduto()
+                    descricao = op.get_descricao()
+                    preco = op.get_preco()
+                    estoque = op.get_estoque()
+                    idCategoria = op.get_idCategoria()
+                    View.produto_excluir(id, descricao, preco, estoque, idCategoria)
+                    st.success("Produto excluído com sucesso!")
+                    st.rerun()
