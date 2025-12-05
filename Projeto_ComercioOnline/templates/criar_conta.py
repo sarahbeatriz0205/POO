@@ -1,0 +1,15 @@
+import streamlit as st
+from views import View
+
+class CriarContaUI:
+    def main():
+        st.header("Criar Conta")
+
+        nome = st.text_input("Nome completo")
+        email = st.text_input("E-mail")
+        telefone = st.text_input("Número de telefone")
+        senha = st.text_input("Senha", type="password")
+        if st.button("Criar Conta"):
+            View.cliente_inserir(nome, email, telefone, senha)
+            st.success('This is a success message!', icon="✅")
+            st.rerun()
