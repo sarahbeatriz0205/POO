@@ -40,7 +40,7 @@ class Produto:
         return Produto(dic["id"], dic["descricao"], dic["preco"], dic["estoque"], dic["idCategoria"])
     
     def __str__(self):
-        return f"ID do produto = {self.__idProduto} - Descrição = {self.__descricao} - Preço = {self.__preco} - Estoque = {self.__estoque} - ID da categoria = {self.__idCategoria}"
+        return f"{self.__idProduto} - {self.__descricao} - R${self.__preco} - Possui {self.__estoque} no estoque - Categoria {self.__idCategoria}"
 
 
 class ProdutoDAO:

@@ -5,6 +5,8 @@ from templates.manterproduto import ManterProdutoUI
 from templates.login import LoginUI
 from templates.criar_conta import CriarContaUI
 from templates.listarprodutosUI import ListarProdutosUI
+from templates.mantercarrinho import ManterCarrinhoUI
+from templates.favoritar import ManterFavoritoUI
 from views import View
 import streamlit as st
 
@@ -22,7 +24,6 @@ class IndexUI:
                                         "Reajustar Produtos"])
                 
                 # ao clicar, direciono o usuário para a página correspode àquela opção
-                st.session_state["opcao"].append(op)
                 if op == "Cadastro de Categorias": ManterCategoriaUI.main()
                 if op == "Cadastro de Clientes": ManterClienteUI.main()
                 if op == "Cadastro de Produtos": ManterProdutoUI.main()
@@ -30,21 +31,19 @@ class IndexUI:
         
         def menu_cliente():
                 op = st.sidebar.selectbox("Menu", ["Listar produtos",
-                                        "Inserir produtos no carrinho",
-                                        "Visualizar o carrinho",
-                                        "Comprar produtos do carrinho",
+                                        "Quero comprar",
                                         "Listar minhas compras",
                                         "Favoritar produtos",
                                         "Desfavoritar produtos",
                                         "Mostrar meus favoritos"])
                 if op == "Listar produtos": ListarProdutosUI.main()
-                if op == "Inserir produtos no carrinho": pass # página que liste os produtos, permita seleção de produtos
-
+                if op == "Quero comprar": ManterCarrinhoUI.main()
+                if op == "Favoritar produtos": ManterFavoritoUI.main()
 
         def sidebar():
                 if "cliente_id" not in st.session_state: IndexUI.menu_visitante()
                 else:
-                        admin = st.session_state["cliente_nome"] == "admin"
+                        admin = st.session_state["cliente_email"] == "admin@"
                         if admin: IndexUI.menu_admin()
                         else: IndexUI.menu_cliente()
                         IndexUI.sair_do_sistema() 
@@ -56,7 +55,7 @@ class IndexUI:
                         st.rerun()
                 
         def main():
-                #View.cliente_criar_admin() # o que receber aqui?
+                View.cliente_criar_admin("admin@", "admin")
                 IndexUI.sidebar() 
 
 

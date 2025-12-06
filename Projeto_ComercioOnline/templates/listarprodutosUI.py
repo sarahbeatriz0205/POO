@@ -10,4 +10,4 @@ class ListarProdutosUI:
             list_dic = []
             for produto in produtos: list_dic.append(produto.to_json())
             df = pd.DataFrame(list_dic)
-            st.dataframe(df, hide_index=True, column_order=["Produto", "Preço", "Estoque"])
+            st.dataframe(df, hide_index=True, column_order=["id", "descricao", "preco", "estoque", "idCategoria"])

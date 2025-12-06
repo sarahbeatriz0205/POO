@@ -30,7 +30,6 @@ class ManterProdutoUI:
         if st.button("Inserir"): 
             View.produto_inserir(id, descricao, preco, estoque, idCategoria)
             st.success("Produto adicionado com sucesso!")
-            st.rerun()
 
     def atualizar():
         produtos = View.produto_listar()

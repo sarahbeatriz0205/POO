@@ -31,13 +31,16 @@ class View:
         id = 0
         c = Cliente(id, nome, email, telefone, senha)
         ClienteDAO.inserir(c)
+      
     def cliente_listar():
         return ClienteDAO.listar()
+    
     def cliente_listar_id(id):
         return ClienteDAO.listar_id(id)
     def cliente_atualizar(id, nome, email, telefone, senha):
         c = Cliente(id, nome, email, telefone, senha)
         ClienteDAO.atualizar(c)
+        
     def cliente_excluir(id, nome, email, telefone, senha):
         c = Cliente(id, nome, email, telefone, senha)
         CarrinhoDAO.excluir_lote_idCliente(id)
@@ -108,8 +111,10 @@ class View:
         total = 0
         for obj in CarrinhoDAO.listar(idCliente):
             produto = ProdutoDAO.listar_id(obj.get_idProduto())
-            total += produto.get_preco() * obj.get_qtd()
-            carrinho.append("Produto: " + produto.get_descricao() + " - Preço: "  + str(produto.get_preco()) + " - Quantidade" + str(obj.get_qtd()) + " - " + str(produto.get_preco() * obj.get_qtd()))
+            preco = float(produto.get_preco())
+            qtd = int(obj.get_qtd())
+            total += preco * qtd
+            carrinho.append(f"Produto: " + produto.get_descricao() + " - Preço: "  + str(preco) + " - Quantidade" + str(qtd) + " - " + str(total))
         carrinho.append("Total: " + str(total))
         return carrinho
     
@@ -120,7 +125,7 @@ class View:
         for carrinho in CarrinhoDAO.listar(idCliente):
             c : Carrinho = carrinho
             produto : Produto = ProdutoDAO.listar_id(c.get_idProduto())
-            total += c.get_qtd() * produto.get_preco()
+            total += (c.get_qtd() * produto.get_preco())
             vi = VendaItem(0, c.get_qtd(), c.get_qtd() * produto.get_preco(), idVenda, c.get_idProduto())
             VendaItemDAO.inserir(vi)
         v = VendaDAO.listar_idCliente(idVenda, idCliente)
@@ -205,5 +210,5 @@ class View:
         favoritos = FavoritoDAO.favoritos(idCliente)
         for f in favoritos:
             produto = ProdutoDAO.listar_id(f.get_idProduto())
-            fav.append("Produto: " + produto.get_descricao() + "\nPreço: " + str(produto.get_preco()))
+            fav.append("Id: " + str(produto.get_idProduto()) + " / Produto: " + produto.get_descricao() + " / Preço: " + str(produto.get_preco()))
         return fav

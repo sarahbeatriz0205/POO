@@ -179,6 +179,7 @@ class UI:
         descricao = input("Qual produto você deseja buscar? ")
         resultado = View.listar_produtos(descricao)
         print(resultado)
+        
     def inserir_produto():
         UI.produto_listar()
         idProduto = int(input("Informe o produto desejado: "))
