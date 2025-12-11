@@ -47,7 +47,7 @@ class VendaDAO:
         for objetoVenda in cls.vendas:
             if objetoVenda.get_idCompra() > idCompra: 
                 idCompra = objetoVenda.get_idCompra()
-        obj.set_idCompra(obj.get_idCompra() + 1)
+        obj.set_idCompra(idCompra + 1)
         cls.vendas.append(obj)
         cls.salvar_json()
         return obj.get_idCompra()

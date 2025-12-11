@@ -13,7 +13,7 @@ class View:
         nome = ""
         telefone = 0
         for obj in ClienteDAO.listar():
-            if obj.get_email() == "admin" and obj.get_senha() == "admin": return
+            if obj.get_email() == "admin@" and obj.get_senha() == "admin": return
         ClienteDAO.inserir(Cliente(id, nome, email, telefone, senha)) # se o if não for verdadeiro, ele passa para a próxima linha e cria um novo admin
     @staticmethod
     def cliente_autenticar(email, senha):
@@ -113,10 +113,38 @@ class View:
             produto = ProdutoDAO.listar_id(obj.get_idProduto())
             preco = float(produto.get_preco())
             qtd = int(obj.get_qtd())
-            total += preco * qtd
-            carrinho.append(f"Produto: " + produto.get_descricao() + " - Preço: "  + str(preco) + " - Quantidade" + str(qtd) + " - " + str(total))
-        carrinho.append("Total: " + str(total))
+            
+            # subtotal é calculado aqui dentro do loop
+            subtotal = preco * qtd
+            
+            total += subtotal
+            carrinho.append({
+                "Produto": produto.get_descricao(),
+                "Preço (R$)": f"{preco:.2f}",
+                "Quantidade": qtd,
+                "Subtotal (R$)": f"{subtotal:.2f}"
+            })
+        
+        # aqui subtotal não existe mais, só usamos total
+        carrinho.append({
+            "Produto": "TOTAL",
+            "Preço (R$)": "",
+            "Quantidade": "",
+            "Subtotal (R$)": f"{total:.2f}"
+        })
         return carrinho
+
+    def total(idCliente):
+        total = 0
+        for obj in CarrinhoDAO.listar(idCliente):
+            produto = ProdutoDAO.listar_id(obj.get_idProduto())
+            preco = float(produto.get_preco())
+            qtd = int(obj.get_qtd())
+            subtotal = preco * qtd
+            total += subtotal
+        
+        return total
+
     
     def finalizar_compra_antigo(idCliente):
         v = Venda(0, idCliente, 0)
@@ -124,8 +152,10 @@ class View:
         total = 0
         for carrinho in CarrinhoDAO.listar(idCliente):
             c : Carrinho = carrinho
+            qtd = int(c.get_qtd())
             produto : Produto = ProdutoDAO.listar_id(c.get_idProduto())
-            total += (c.get_qtd() * produto.get_preco())
+            preco = float(produto.get_preco())
+            total += (qtd * preco)
             vi = VendaItem(0, c.get_qtd(), c.get_qtd() * produto.get_preco(), idVenda, c.get_idProduto())
             VendaItemDAO.inserir(vi)
         v = VendaDAO.listar_idCliente(idVenda, idCliente)

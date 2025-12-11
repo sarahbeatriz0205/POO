@@ -24,11 +24,11 @@ class ManterProdutoUI:
     def inserir():
         id = 0
         descricao = st.text_input("Descrição do produto")
-        preco = st.text_input("Preço")
-        estoque = st.text_input("Estoque atual")
-        idCategoria = st.text_input("Id da categoria a qual pertence")
-        if st.button("Inserir"): 
-            View.produto_inserir(id, descricao, preco, estoque, idCategoria)
+        preco = st.number_input("Preço")
+        estoque = st.number_input("Estoque atual", value=0)
+        categoria = st.selectbox("Categoria", View.categoria_listar())
+        if len(View.categoria_listar()) > 0 and st.button("Inserir"): 
+            View.produto_inserir(id, descricao, preco, estoque, categoria.get_id())
             st.success("Produto adicionado com sucesso!")
 
     def atualizar():
@@ -37,12 +37,12 @@ class ManterProdutoUI:
         else:
             op = st.selectbox("Atualizar Produtos", produtos)
             descricao = st.text_input("Nova descrição",  op.get_descricao())
-            preco = st.text_input("Novo preço", op.get_preco())
-            estoque = st.text_input("Novo estoque", op.get_estoque())
-            idCategoria = st.text_input("Nova categoria", op.get_idCategoria())
-            if st.button("Atualizar"):
+            preco = st.number_input("Novo preço", min_value=0.0, value=op.get_preco())
+            estoque = st.number_input("Novo estoque", min_value=0, value=op.get_estoque())
+            categorias = st.selectbox("Nova categoria", View.categoria_listar())
+            if len(View.categoria_listar()) > 0 and  st.button("Atualizar"):
                 id = op.get_idProduto()
-                View.produto_atualizar(id, descricao, preco, estoque, idCategoria)
+                View.produto_atualizar(id, descricao, preco, estoque, categorias.get_id())
                 st.success("Produto atualizado com sucesso!")
                 st.rerun()
     
