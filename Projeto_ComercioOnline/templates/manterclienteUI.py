@@ -27,13 +27,14 @@ class ManterClienteUI:
         email = st.text_input("E-mail")
         telefone = st.text_input("Telefone")
         senha = st.text_input("Senha")
-        if st.button("Inserir"): 
+        if st.button("Inserir"):
             try:
                 View.cliente_inserir(nome, email, telefone, senha)
                 st.success("Cliente inserido com sucesso")
-            except Exception as erro:
-                st.error(erro)
-            st.rerun()
+                st.rerun()
+            except Exception as error:
+                st.error(f"{error}")
+                st.rerun()
 
     def atualizar():
         clientes = View.cliente_listar()

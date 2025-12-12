@@ -26,14 +26,18 @@ class ManterFavoritoUI:
     def desfavoritar(): # na teoria, tá funcionando kkkkk
         idCliente = st.session_state["cliente_id"]
         produtos_fav = View.produtos_favoritos(idCliente)
-        if produtos_fav: 
-            op = st.selectbox("Selecione o produto que você deseja desfavoritar", produtos_fav, format_func=lambda p: f"Id: {p['idProduto']} / Produto: {p['Produto']} / Preço: {p['Preço']}")
-            idProduto = op["idProduto"]
-            c = Favorito(idProduto, idCliente)
-            if op and st.button("Desfavoritar"):
-                View.desfavoritar(c)
-                st.success("Item desfavoritado com sucesso!")
-    
+        if produtos_fav == None:
+            st.write("Nenhum produto favoritado até o momento.")
+        else:
+            if produtos_fav: 
+                op = st.selectbox("Selecione o produto que você deseja desfavoritar", produtos_fav, format_func=lambda p: f"Id: {p['idProduto']} / Produto: {p['Produto']} / Preço: {p['Preço']}")
+                idProduto = op["idProduto"]
+                c = Favorito(idProduto, idCliente)
+                if op and st.button("Desfavoritar"):
+                    View.desfavoritar(c)
+                    st.success("Item desfavoritado com sucesso!")
+                    st.rerun()
+        
     def meus_favoritos():
         idCliente = st.session_state["cliente_id"]
         favoritos = View.produtos_favoritos(idCliente)

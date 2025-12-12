@@ -29,6 +29,15 @@ class View:
         return None
     def cliente_inserir(nome, email, telefone, senha):
         id = 0
+        if nome is None or email is None or telefone is None or senha is None:
+            raise ValueError("Erro! O preenchimento de todos os campos é obrigatório.")
+        if nome.isnumeric():
+            raise ValueError("Erro! O nome fornecido é inválido.")
+        if "@" not in email:
+            raise ValueError("Erro! O email fornecido é inválido.")
+        ddds_brasil = [11, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 24, 27, 28, 31, 32, 33, 34, 35, 37, 38, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 53, 54, 55, 61, 62, 64, 63, 65, 66, 67, 68, 69, 71, 73, 74, 75, 77, 79, 81, 87, 82, 83, 84, 85, 88,86, 89, 91, 93, 94, 92, 97, 95, 96, 98, 99]
+        if len(telefone) == 0 or int(telefone[:2]) not in ddds_brasil:
+            raise ValueError("Erro! O número de telefone fornecido é inválido.")
         c = Cliente(id, nome, email, telefone, senha)
         ClienteDAO.inserir(c)
       
@@ -37,7 +46,17 @@ class View:
     
     def cliente_listar_id(id):
         return ClienteDAO.listar_id(id)
+
     def cliente_atualizar(id, nome, email, telefone, senha):
+        if nome == "" or email == "" or telefone == "" or senha == "":
+            raise ValueError("Erro! O preenchimento de todos os campos é obrigatório.")
+        if nome.isnumeric():
+            raise ValueError("Erro! O nome fornecido é inválido.")
+        if "@" not in email:
+            raise ValueError("Erro! O email fornecido é inválido.")
+        ddds_brasil = [11, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 24, 27, 28, 31, 32, 33, 34, 35, 37, 38, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 53, 54, 55, 61, 62, 64, 63, 65, 66, 67, 68, 69, 71, 73, 74, 75, 77, 79, 81, 87, 82, 83, 84, 85, 88,86, 89, 91, 93, 94, 92, 97, 95, 96, 98, 99]
+        if len(telefone) == 0 or int(telefone[:2]) not in ddds_brasil:
+            raise ValueError("Erro! O número de telefone fornecido é inválido.")
         c = Cliente(id, nome, email, telefone, senha)
         ClienteDAO.atualizar(c)
         
@@ -53,12 +72,20 @@ class View:
 
     def categoria_inserir(descricao):
         id = 0
+        if descricao == "":
+            raise ValueError("Erro! O preenchimento desse campo é obrigatório.")
+        if descricao.isnumeric():
+            raise ValueError("Erro! A descrição não pode ser numérica.")
         CategoriaDAO.inserir(Categoria(id, descricao))
     def categoria_listar():
         return CategoriaDAO.listar()
     def categoria_listar_id(id):
         return CategoriaDAO.listar_id(id)
     def categoria_atualizar(id, descricao):
+        if descricao == "":
+            raise ValueError("Erro! O preenchimento desse campo é obrigatório.")
+        if descricao.isnumeric():
+            raise ValueError("Erro! A descrição não pode ser numérica.")
         c = Categoria(id, descricao)
         CategoriaDAO.atualizar(c)
     def categoria_excluir(id, descricao):
@@ -67,20 +94,31 @@ class View:
 
     def produto_inserir(id, descricao, preco, estoque, idCategoria):
         id = 0
+        if descricao == "":
+            raise ValueError("Erro! O preenchimento de todos os campos é obrigatório.")
+        if preco == 0.0 or preco < 0 or estoque == 0 or estoque < 0:
+            raise ValueError("Erro! Nenhum dos valores podem ser menores ou iguais à 0.")
+        if descricao.isnumeric():
+            raise ValueError("Erro! A descrição não pode ser numérica.")
         c = Produto(id, descricao, preco, estoque, idCategoria)
         ProdutoDAO.inserir(c)
     def produto_listar():
         return ProdutoDAO.listar()
-
     def produto_listar_id(id):
         return ProdutoDAO.listar_id(id)
     def produto_atualizar(id, descricao, preco, estoque):
+        if descricao == "" or preco == 0.0 or estoque == 0:
+            raise ValueError("Erro! O preenchimento de todos os campos é obrigatório.")
+        if preco == 0.0 or preco < 0 or estoque == 0 or estoque < 0:
+            raise ValueError("Erro! Nenhum dos valores podem ser menores ou iguais à 0.")
+        if descricao.isnumeric():
+            raise ValueError("Erro! A descrição não pode ser numérica.")
         c = Produto(id, descricao, preco, estoque)
         ProdutoDAO.atualizar(c)
     def produto_excluir(id):
         c = Produto(id)
         ProdutoDAO.excluir(c)
-    def produto_reajuste(percentual):
+    def produto_reajuste(percentual): # validar reajuste depois
         for obj in ProdutoDAO.listar():
             reajuste = obj.get_preco() * (1 + percentual)
             obj.set_preco(reajuste)
@@ -103,6 +141,8 @@ class View:
         return f"Produto não encontrado!"
     def inserir_produto(obj):
         produto = ProdutoDAO.listar_id(obj.get_idProduto())
+        if obj.get_qtd() <= 0: #validar pro estoque tbm. se a qtd for maior que o estoque, não deixa adicionar
+            raise ValueError("Quantidade inválida.")
         if produto != None:
                 CarrinhoDAO.inserir(obj)
         return None
@@ -113,10 +153,7 @@ class View:
             produto = ProdutoDAO.listar_id(obj.get_idProduto())
             preco = float(produto.get_preco())
             qtd = int(obj.get_qtd())
-            
-            # subtotal é calculado aqui dentro do loop
             subtotal = preco * qtd
-            
             total += subtotal
             carrinho.append({
                 "Produto": produto.get_descricao(),
@@ -124,8 +161,6 @@ class View:
                 "Quantidade": qtd,
                 "Subtotal (R$)": f"{subtotal:.2f}"
             })
-        
-        # aqui subtotal não existe mais, só usamos total
         carrinho.append({
             "Produto": "TOTAL",
             "Preço (R$)": "",
@@ -142,7 +177,6 @@ class View:
             qtd = int(obj.get_qtd())
             subtotal = preco * qtd
             total += subtotal
-        
         return total
 
     
@@ -198,8 +232,7 @@ class View:
                         "quantidade": vi.get_quantidade(),
                         "preco_total": vi.get_preco(),
                         "total_venda": venda.get_total()
-                    })
-               
+                    })       
         return conteudo, total_geral
 
     

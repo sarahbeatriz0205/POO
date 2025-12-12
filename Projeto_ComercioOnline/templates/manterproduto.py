@@ -6,11 +6,12 @@ class ManterProdutoUI:
     def main():
         st.header("Cadastro de produtos")
 
-        tab1, tab2, tab3, tab4 = st.tabs(["Listar", "Inserir", "Atualizar", "Excluir"])
+        tab1, tab2, tab3, tab4 = st.tabs(["Listar", "Inserir", "Atualizar", "Excluir", "Reajustar Preço"])
         with tab1: ManterProdutoUI.listar()
         with tab2: ManterProdutoUI.inserir()
         with tab3: ManterProdutoUI.atualizar()
         with tab4: ManterProdutoUI.excluir()
+        with tab4: ManterProdutoUI.reajustar_preco()
 
     def listar():
         produtos = View.produto_listar()
@@ -47,7 +48,6 @@ class ManterProdutoUI:
                 st.rerun()
     
     def excluir():
-        # selecionar um produto já existente e excluir
         produtos = View.produto_listar()
         if len(produtos) == 0: st.write("Nenhum produto até o momento")
         else:
@@ -62,3 +62,6 @@ class ManterProdutoUI:
                     View.produto_excluir(id, descricao, preco, estoque, idCategoria)
                     st.success("Produto excluído com sucesso!")
                     st.rerun()
+    
+    #def reajustar_preco():
+        #produtos = View.produto_listar()
