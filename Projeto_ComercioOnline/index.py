@@ -1,12 +1,13 @@
 from templates.manterclienteUI import ManterClienteUI
 from templates.mantercategoria import ManterCategoriaUI
-from templates.reajustarproduto import ReajusteProdutoUI
+from templates.listarvendasadmin import ListarVendasUI
 from templates.manterproduto import ManterProdutoUI
 from templates.login import LoginUI
 from templates.criar_conta import CriarContaUI
 from templates.listarprodutosUI import ListarProdutosUI
 from templates.mantercarrinho import ManterCarrinhoUI
 from templates.favoritar import ManterFavoritoUI
+from templates.listarcomprasUI import ListarMinhasComprasUI
 from views import View
 import streamlit as st
 
@@ -21,24 +22,23 @@ class IndexUI:
                 op = st.sidebar.selectbox("Menu", ["Cadastro de Categorias", 
                                         "Cadastro de Clientes", 
                                         "Cadastro de Produtos", 
-                                        "Reajustar Produtos"])
+                                        "Listar todas as vendas"])
                 
                 # ao clicar, direciono o usuário para a página correspode àquela opção
                 if op == "Cadastro de Categorias": ManterCategoriaUI.main()
                 if op == "Cadastro de Clientes": ManterClienteUI.main()
                 if op == "Cadastro de Produtos": ManterProdutoUI.main()
-                if op == "Reajustar Produtos": ReajusteProdutoUI.main()
+                if op == "Listar todas as vendas": ListarVendasUI.main()
         
         def menu_cliente():
                 op = st.sidebar.selectbox("Menu", ["Listar produtos",
                                         "Quero comprar",
                                         "Listar minhas compras",
-                                        "Favoritar produtos",
-                                        "Desfavoritar produtos",
-                                        "Mostrar meus favoritos"])
+                                        "Favoritar produtos"])
                 if op == "Listar produtos": ListarProdutosUI.main()
                 if op == "Quero comprar": ManterCarrinhoUI.main()
                 if op == "Favoritar produtos": ManterFavoritoUI.main()
+                if op == "Listar minhas compras": ListarMinhasComprasUI.main()
 
         def sidebar():
                 if "cliente_id" not in st.session_state: IndexUI.menu_visitante()

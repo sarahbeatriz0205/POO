@@ -2,21 +2,28 @@ from datetime import datetime
 import json
 
 class Venda:
-    def __init__(self, idCompra, idCliente, total, data = datetime.now()):
+    def __init__(self, idCompra, idCliente, total, data=None):
         self.set_idCompra(idCompra)
-        self.set_data(data) # data e horas atuais; chamar quando a compra for finalizada, ou seja, quando total for 0
-        self.set_total(total) # preciso do id do produto pra pegar o preço
+        if data is None:
+            self.set_data()  # usa datetime.now()
+        else:
+            # se vier string do JSON, converte para datetime
+            if isinstance(data, str):
+                self.__data = datetime.strptime(data, "%d/%m/%Y %H:%M:%S")
+            else:
+                self.__data = data
+        self.set_total(total)
         self.set_idCliente(idCliente)
-    
+
     def set_idCompra(self, idCompra):
         self.__idCompra = idCompra
-    def set_data(self, data):
-        self.__data = data
+    def set_data(self):
+        self.__data = datetime.now()
     def set_total(self, total):
         self.__total = total
     def set_idCliente(self, idCliente):
         self.__idCliente = idCliente
-    
+
     def get_idCompra(self):
         return self.__idCompra
     def get_data(self):
@@ -25,12 +32,17 @@ class Venda:
         return self.__total
     def get_idCliente(self):
         return self.__idCliente
-    
+
     def __str__(self):
         return f"ID da compra = {self.__idCompra} - Data = {self.__data} - Total da compra = {self.__total} - ID do cliente = {self.__idCliente}"
         
     def to_json(self):
-        return {"idCompra" : self.__idCompra, "data" : self.__data.isoformat(), "idCliente" : self.__idCliente, "Total" : self.__total} # me permite que eu ponha o nome que eu quiser para as chaves
+        return {
+            "idCompra": self.__idCompra,
+            "data": self.__data.strftime("%d/%m/%Y %H:%M:%S"),
+            "idCliente": self.__idCliente,
+            "Total": self.__total
+        }
     
     @staticmethod
     def from_json(dic):
@@ -41,16 +53,13 @@ class VendaDAO:
     vendas : list[Venda] = []
 
     @classmethod
-    def inserir(cls, obj):
+    def inserir(cls, venda):
         cls.abrir_json()
-        idCompra = 0
-        for objetoVenda in cls.vendas:
-            if objetoVenda.get_idCompra() > idCompra: 
-                idCompra = objetoVenda.get_idCompra()
-        obj.set_idCompra(idCompra + 1)
-        cls.vendas.append(obj)
+        venda.set_idCompra(len(cls.vendas) + 1)
+        cls.vendas.append(venda)   # <-- adiciona, não sobrescreve
         cls.salvar_json()
-        return obj.get_idCompra()
+        return venda.get_idCompra()
+
     @classmethod
     def listar(cls):
         cls.abrir_json() # não pode ser "return cls.abrir_json" porque esse método não retorna nada
@@ -75,11 +84,11 @@ class VendaDAO:
                 return obj
         return None
     @classmethod
-    def atualizar(cls, obj):
-        aux = cls.listar_idCliente(obj.get_idCompra(), obj.get_idCliente())
-        if aux != None:
-            cls.vendas.remove(aux)
-            cls.vendas.append(obj)
+    def atualizar(cls, venda):
+        for i, v in enumerate(cls.vendas):
+            if v.get_idCompra() == venda.get_idCompra():
+                cls.vendas[i] = venda
+                break
         cls.salvar_json()
     @classmethod
     def excluir(cls, obj):
@@ -95,8 +104,9 @@ class VendaDAO:
                 cls.excluir(objeto)
     @classmethod
     def salvar_json(cls):
-        with open("vendas.json", mode="w") as arquivo:
-            json.dump(cls.vendas, arquivo, default = Venda.to_json, indent=4)
+        with open("vendas.json", "w", encoding="utf-8") as arquivo:
+            json.dump([v.to_json() for v in cls.vendas], arquivo, indent=4)
+
     @classmethod
     def abrir_json(cls):
         cls.vendas = []

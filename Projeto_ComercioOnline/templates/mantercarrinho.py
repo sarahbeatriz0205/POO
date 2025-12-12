@@ -35,4 +35,5 @@ class ManterCarrinhoUI:
         idCliente = st.session_state["cliente_id"]
         st.write("Total: ", View.total(idCliente))
         if st.button("Finalizar compra"):
+            st.success("Compra finalizada com sucesso!")
             View.finalizar_compra(idCliente)

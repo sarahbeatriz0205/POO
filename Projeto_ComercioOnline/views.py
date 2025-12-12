@@ -178,34 +178,50 @@ class View:
             v = VendaDAO.listar_idCliente(idVenda, idCliente)
             v.set_total(total)
             VendaDAO.atualizar(v)
-            for carrinho in CarrinhoDAO.listar(idCliente): CarrinhoDAO.excluir(carrinho)
+            for carrinho in CarrinhoDAO.listar(idCliente): 
+                CarrinhoDAO.excluir(carrinho)
 
     def listar_compras(idCliente):
-        vendas : list[Venda] = VendaDAO.listar_meus(idCliente)
+        vendas = VendaDAO.listar_meus(idCliente)
         conteudo = []
-        total = 0
+        total_geral = 0
+
         for venda in vendas:
-            total += venda.get_total()
-            vis : list[VendaItem] = VendaItemDAO.listar_idVenda(venda.get_idCompra())
+            total_geral += venda.get_total()
+            vis = VendaItemDAO.listar_idVenda(venda.get_idCompra())
             for vi in vis:
-                produto : Produto = ProdutoDAO.listar_id(vi.get_idProduto())
-                conteudo.append(produto.get_descricao() + " - Unitario: "  + str(produto.get_preco()) + " - " + str(vi.get_quantidade()) + " - " + str(vi.get_preco()))
-            conteudo.append("Total Venda " + str(venda.get_idCompra()) + ":" + str(venda.get_total())) 
-        conteudo.append("Total todas vendas: " + str(total))    
-        return conteudo
+                produto = ProdutoDAO.listar_id(vi.get_idProduto())
+                conteudo.append({
+                        "idVenda": venda.get_idCompra(),
+                        "descricao": produto.get_descricao(),
+                        "unitario": produto.get_preco(),
+                        "quantidade": vi.get_quantidade(),
+                        "preco_total": vi.get_preco(),
+                        "total_venda": venda.get_total()
+                    })
+               
+        return conteudo, total_geral
+
     
     def listar_compras_admin():
-        vendas : list[Venda] = VendaDAO.listar()
+        vendas: list[Venda] = VendaDAO.listar()
         conteudo = []
         for venda in vendas:
-            cliente : Cliente = ClienteDAO.listar_id(venda.get_idCliente())
-            conteudo.append("Cliente: " + cliente.get_nome())
-            vis : list[VendaItem] = VendaItemDAO.listar_idVenda(venda.get_idCompra())
+            cliente: Cliente = ClienteDAO.listar_id(venda.get_idCliente())
+            vis: list[VendaItem] = VendaItemDAO.listar_idVenda(venda.get_idCompra())
             for vi in vis:
-                produto : Produto = ProdutoDAO.listar_id(vi.get_idProduto())
-                conteudo.append(produto.get_descricao() + " - Unitario: "  + str(produto.get_preco()) + " - " + str(vi.get_quantidade()) + " - " + str(vi.get_preco()))
-            conteudo.append("Total Venda " + str(venda.get_idCompra()) + ":" + str(venda.get_total()))   
+                produto: Produto = ProdutoDAO.listar_id(vi.get_idProduto())
+                conteudo.append({
+                    "idVenda": venda.get_idCompra(),
+                    "cliente": cliente.get_nome(),
+                    "produto": produto.get_descricao(),
+                    "unitario": produto.get_preco(),
+                    "quantidade": vi.get_quantidade(),
+                    "preco_item": vi.get_preco(),
+                    "total_venda": venda.get_total()
+                })
         return conteudo
+
     
     def listar_compras_admin_agrupado():
         clientes : list[Cliente] = ClienteDAO.listar()
@@ -240,5 +256,19 @@ class View:
         favoritos = FavoritoDAO.favoritos(idCliente)
         for f in favoritos:
             produto = ProdutoDAO.listar_id(f.get_idProduto())
-            fav.append("Id: " + str(produto.get_idProduto()) + " / Produto: " + produto.get_descricao() + " / Preço: " + str(produto.get_preco()))
+            fav.append({
+            "idProduto": produto.get_idProduto(),
+            "Produto": produto.get_descricao(),
+            "Preço": produto.get_preco()
+        })
+        if len(fav) == 0:
+            return None 
+        return fav
+    
+    def lista_favoritados(idCliente):
+        fav = []
+        favoritos = FavoritoDAO.favoritos(idCliente)
+        for f in favoritos:
+            produto = ProdutoDAO.listar_id(f.get_idProduto())
+            fav.append([produto.get_idProduto(), produto.get_descricao(), produto.get_preco()])
         return fav

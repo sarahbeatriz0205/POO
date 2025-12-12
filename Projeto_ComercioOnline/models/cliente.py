@@ -10,7 +10,7 @@ class Cliente:
     def set_idCliente(self, idCliente):
         self.__idCliente = idCliente
     def set_nome(self, nome):
-        self.__nome = nome
+            self.__nome = nome
     def set_email(self, email):
         self.__email = email
     def set_telefone(self, telefone):

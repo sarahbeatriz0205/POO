@@ -26,8 +26,7 @@ class ManterCategoriaUI:
         descricao = st.text_input("Descrição")
         if st.button("Inserir"): 
             View.categoria_inserir(descricao)
-            st.success("Ctegoria adicionado com sucesso!")
-            st.rerun()
+            st.success("Categoria adicionado com sucesso!")
 
     def atualizar():
         categorias = View.categoria_listar()
