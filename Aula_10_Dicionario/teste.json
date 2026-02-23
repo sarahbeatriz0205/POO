@@ -1,7 +1,0 @@
-    {
-      "nome": "Exemplo",
-      "ano": 2025,
-      "ativo": true,
-      "tags": ["teste", "json"],
-      "descricao": null
-    }
