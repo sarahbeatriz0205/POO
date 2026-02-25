@@ -1,3 +1,5 @@
+package poo_java.estudos;
+
 public class ContaBancaria{
     public String nome;
     public double saldo;

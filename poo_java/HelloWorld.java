@@ -1,4 +1,4 @@
-class HelloWorld{ //todo código em Java deve estar dentro de uma classe (extremamente orientada à objetos)
+public class HelloWorld{ //todo código em Java deve estar dentro de uma classe (extremamente orientada à objetos)
     public static void main (String[] args){ // método principal, pertencente à classe HelloWorld
         System.out.print("Hello, World!");
     }

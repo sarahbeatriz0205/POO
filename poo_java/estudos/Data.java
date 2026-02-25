@@ -1,3 +1,5 @@
+package poo_java.estudos;
+
 public class Data{
     public int dia;
     public int mes;

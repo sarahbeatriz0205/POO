@@ -1,3 +1,5 @@
+package poo_java.estudos;
+
 public class Lampada {
     public boolean estaLigada;
 
